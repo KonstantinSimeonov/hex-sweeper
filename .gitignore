@@ -1,0 +1,16 @@
+# npm
+node_modules
+
+# type definitions
+typings
+
+# bash
+*.sh
+
+# vscode
+jsconfig.json
+typings.json
+.vscode
+
+# build output
+dist

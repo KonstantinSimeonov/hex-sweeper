@@ -1,0 +1,47 @@
+:local .cell
+    list-style: none
+    display: inline-block
+    position: relative
+    width: 40px
+    height: 23.09px
+    background-color: #64C7CC
+    margin: 0 0.5%
+    opacity: 1
+    transition: 1s opacity
+
+    & a
+        padding: 1%
+
+    & a.mine
+        background-color: red
+
+    & a.two
+        background-color: blue
+
+    & a.one
+        background-color: green
+        
+    & a.empty
+        background-color: lightgray
+
+    &.cut
+        visibility: hidden
+
+    &:hover
+        opacity: .5
+
+    &:before, &:after
+        content: ""
+        position: absolute
+        width: 0
+        border-left: 20px solid transparent
+        border-right: 20px solid transparent
+
+    &:before
+        bottom: 100%
+        border-bottom: 11.55px solid #64C7CC
+
+    &:after
+        top: 100%
+        width: 0
+        border-top: 11.55px solid #64C7CC
