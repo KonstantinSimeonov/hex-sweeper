@@ -31,7 +31,7 @@ function startGame() {
 
 function renderModalWindow() {
     const children = closeFn => (<RegistrationForm close={closeFn}/>);
-    ReactDOM.render(<ModalWindow title="Nigga!" getChildren={children}/>, document.getElementById('modal'));
+    ReactDOM.render(<ModalWindow title="Choose a username and password" getChildren={children}/>, document.getElementById('modal'));
 }
 
 ReactDOM.render(
