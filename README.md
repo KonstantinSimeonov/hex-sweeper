@@ -24,3 +24,5 @@ Web based minesweeper where the field and the cells have the shape of a hexagon.
     - Stylus
     - Webpack
     - Babel
+    - Mocha
+    - Chai
