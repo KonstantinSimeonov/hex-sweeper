@@ -1,0 +1,15 @@
+{
+  "name": "mine-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate-mines.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
