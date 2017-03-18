@@ -13,7 +13,8 @@ export class AppMenu extends Component {
             buttons: [
                 { text: 'Play', href: 'play', click: this.props.startGame },
                 { text: 'Hall of fame', href: 'hall-of-fame' },
-                { text: 'Register', href: 'register', click: this.props.register }
+                { text: 'Register', href: 'register', click: this.props.register },
+                { text: 'Log in', href: 'login' }
             ]
         };
 

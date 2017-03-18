@@ -12,35 +12,87 @@ import { MineField } from './MineField.jsx';
 
 import './styles/global.styl';
 
-function renderField(field) {
-    ReactDOM.render(<MineField field={field} />, document.getElementById('game-container'));
+function renderField(field, f, g) {
+    ReactDOM.render(<div>
+        <MineField field={g} />
+        <br/>
+        <br/>
+        <br/>
+        <MineField field={field} />
+        <br />
+        <br />
+        <br />
+        <br />
+        <MineField field={f} />
+    </div>, document.getElementById('game-container'));
 }
 
 let socket, gosho;
 
 function startGame() {
     socket = io.connect('http://localhost:6969');
-    renderField([
-        [null, 0, 0, 0, null],
-        [0, 0, 0, 0, null],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, null],
-        [null, 0, 0, 0, null],
-    ]);
+    renderField(
+        //[
+        //     [null, 0, 0, 0, null],
+        //     [0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0],
+        //     [null, 0, 0, 0, null],
+        // ]
+        // [
+        //     [null, 0, 0, 0, null],
+        //     [0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0],
+        //     [null, 0, 0, 0, null]],
+        [ [ null, null, 0, 0, 0, 0, null, null ],
+  [ null, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, 0, null ],
+  [ 0, 0, 0, 0, 0, 0, 0 ],
+  [ null, 0, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, null ],
+  [ null, null, 0, 0, 0, 0, null, null ] ],
+        [ [ null, null, null, 0, 0, 0, 0, 0, 0, null, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, null, 0, 0, 0, 0, 0, 0, null, null, null ] ],
+ [ [ null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null ],
+  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
+  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
+  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
+  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
+  [ null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null ] ]
+    );
 }
 
 function renderModalWindow() {
-    const children = closeFn => (<RegistrationForm close={closeFn}/>);
-    ReactDOM.render(<ModalWindow title="Choose a username and password" getChildren={children}/>, document.getElementById('modal'));
+    const children = closeFn => (<RegistrationForm close={closeFn} />);
+    ReactDOM.render(<ModalWindow title="Choose a username and password" getChildren={children} />, document.getElementById('modal'));
 }
 
 ReactDOM.render(
     <div>
         <div>
-            <AppMenu startGame={startGame} register={renderModalWindow}/>
+            <AppMenu startGame={startGame} register={renderModalWindow} />
         </div>
         <main id="game-container">
-            
+
         </main>
         <div id="modal"></div>
     </div>,
