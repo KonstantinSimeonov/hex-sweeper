@@ -12,73 +12,18 @@ import { MineField } from './MineField.jsx';
 
 import './styles/global.styl';
 
-function renderField(field, f, g) {
+function renderField(field) {
     ReactDOM.render(<div>
-        <MineField field={g} />
-        <br/>
-        <br/>
-        <br/>
         <MineField field={field} />
-        <br />
-        <br />
-        <br />
-        <br />
-        <MineField field={f} />
     </div>, document.getElementById('game-container'));
 }
 
 let socket, gosho;
 
 function startGame() {
-    socket = io.connect('http://localhost:6969');
-    renderField(
-        //[
-        //     [null, 0, 0, 0, null],
-        //     [0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0],
-        //     [null, 0, 0, 0, null],
-        // ]
-        // [
-        //     [null, 0, 0, 0, null],
-        //     [0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0],
-        //     [null, 0, 0, 0, null]],
-        [ [ null, null, 0, 0, 0, 0, null, null ],
-  [ null, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, 0, null ],
-  [ 0, 0, 0, 0, 0, 0, 0 ],
-  [ null, 0, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, null ],
-  [ null, null, 0, 0, 0, 0, null, null ] ],
-        [ [ null, null, null, 0, 0, 0, 0, 0, 0, null, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, null, 0, 0, 0, 0, 0, 0, null, null, null ] ],
- [ [ null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null ],
-  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
-  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null ],
-  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
-  [ null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null ],
-  [ null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null ] ]
-    );
+    socket = io.connect('http://localhost:6969', { query: 'size=5&mines=30' });
+    
+    socket.on('fieldReady', renderField);
 }
 
 function renderModalWindow() {

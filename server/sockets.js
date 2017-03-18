@@ -1,19 +1,23 @@
 'use strict';
 
-const logic = require('./logic/logic-provider');
+const uuid = require('fs')
+
+const { createField, revealCellAt } = require('./logic');
 
 const STORAGE = Object.create(null);
 
-STORAGE.games = [];
+STORAGE.games = {};
+
+
 
 module.exports = function (server) {
     const io = require('socket.io')(server);
 
     io.on('connection', (socket) => {
-        const field = logic.generateField(8, 'high');
+        const { size, mines } = socket.request._query;
 
-        STORAGE.games.push(field);
-        
+        const field = createField(+size, +mines);
+
         socket.emit('fieldReady', field);
     });
 }
