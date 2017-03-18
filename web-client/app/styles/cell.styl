@@ -11,21 +11,25 @@
 
     & a
         padding: 1%
+        position: absolute
+        display: inline-block
+        left: 33%
+        text-decoration: none
 
-    & a.mine
-        background-color: red
+    &.mine a
+        color: red
 
-    & a.two
-        background-color: blue
+    &.two a
+        color: blue
 
-    & a.one
-        background-color: green
+    &.one a
+        color: green
         
-    & a.empty
-        background-color: lightgray
+    &.empty a
+        color: lightgray
 
     &.cut
-        background: red
+        visibility: hidden
 
     &:hover
         opacity: .5

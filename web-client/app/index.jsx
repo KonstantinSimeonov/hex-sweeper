@@ -14,16 +14,35 @@ import './styles/global.styl';
 
 function renderField(field) {
     ReactDOM.render(<div>
-        <MineField field={field} />
+        <MineField onMove={move} field={field} />
     </div>, document.getElementById('game-container'));
 }
 
-let socket, gosho;
+let socket, field;
+
+function move(row, col) {
+    console.log('what');
+    socket.emit('move', { row, col });
+}
 
 function startGame() {
-    socket = io.connect('http://localhost:6969', { query: 'size=5&mines=30' });
+    socket = io.connect('http://localhost:6969', { query: 'size=5&mines=15' });
     
-    socket.on('fieldReady', renderField);
+    socket.on('fieldReady', data => {
+        field = data;
+        renderField(field);
+    });
+    socket.on('fieldUpdate', updates => {
+        for(const update of updates) {
+            const { row, col, value } = update;
+
+            field[row][col] = value;
+        }
+
+        console.log(updates);
+
+        renderField(field);
+    });
 }
 
 function renderModalWindow() {

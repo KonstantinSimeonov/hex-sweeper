@@ -13,17 +13,30 @@ const { revealCellAt, isInsideSquare, countAdjMines, neighbors } = require('../.
 const json = JSON.stringify.bind(JSON);
 
 describe('Field traversing and mutating', () => {
-    describe('neighbors', () => {
-
-    });
 
     describe('Cell revealing', () => {
+        it('Callback should provide access to update cell row, col, the field and its adjacent mines count', () => {
+            const testField = [
+                    [X, M, O, X],
+                    [M, O, O],
+                    [X, O, O, X]
+                ];
+
+            const updates = [];
+
+            revealCellAt(1, 2, testField, (row, col, field, adj) => {
+                updates.push({ row, col, value: field[row][col] });
+            });
+
+            expect.fail('Test not implemented');            
+        });
+
         it('Empty field with one mone should reveal all except mine and those around it', () => {
             const testField = [
                     [X, O, O, O, X],
-                    [O, O, O, O],
+                     [O, O, O, O],
                     [O, O, M, O, O],
-                    [O, O, O, O],
+                     [O, O, O, O],
                     [X, O, O, O, X]
                 ],
                 expected = [

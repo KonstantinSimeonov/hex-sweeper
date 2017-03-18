@@ -6,5 +6,5 @@ import ReactDOM from 'react-dom';
 import cellStyles from './styles/cell.styl';
 
 export function Cell(props) {
-    return (<li className={cellStyles.cell + ' ' + cellStyles[props.cellType]}><a href="#" className={cellStyles[props.cellType]}></a></li>);
+    return (<li onClick={props.onClick} className={cellStyles.cell + ' ' + cellStyles[props.cellType]}><a href="#" className={cellStyles[props.cellValue]}>{props.value}</a></li>);
 }
