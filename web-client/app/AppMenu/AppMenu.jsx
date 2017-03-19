@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 
-import styles from './styles/app-menu.styl';
+import styles from './app-menu.styl';
 
 export default class AppMenu extends Component {
     constructor(props) {

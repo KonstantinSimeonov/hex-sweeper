@@ -3,8 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import cssStyles from './styles/mine-field.styl';
-import { Cell } from './Cell.jsx';
+import cssStyles from './mine-field.styl';
+import Cell from './Cell.jsx';
 
 function cellType(cellValue) {
     switch(cellValue) {
@@ -17,8 +17,6 @@ function cellType(cellValue) {
 }
 
 export default function MineField(props) {
-    console.log(props.onMove);
-
     return (<div className={cssStyles.mineField}>
         {props.field.map((fieldRow, row) => 
         (<ul key={row}>{fieldRow.map((cellValue, col) => <Cell onClick={() => props.onMove(row, col)} key={row + ';' + col} value={cellValue} cellType={cellType(cellValue)}/>)}</ul>))}

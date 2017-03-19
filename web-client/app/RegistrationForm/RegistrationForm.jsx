@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react';
 
-import { post } from './utils/json-requester.js';
+import { post } from '../utils/json-requester.js';
 
-import TextInput from './TextInput.jsx';
-import styles from './styles/registration-form.styl';
+import TextInput from '../TextInput/TextInput.jsx';
+import styles from './registration-form.styl';
 
 export default class RegistrationForm extends Component {
     constructor(props) {

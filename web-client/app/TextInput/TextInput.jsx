@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import styles from './styles/text-input.styl'
+import styles from './text-input.styl'
 
 export default class TextInput extends Component {
     constructor(props) {

@@ -7,12 +7,11 @@ import createBrowserHistory from 'history/createBrowserHistory.js'
 import $ from 'jquery';
 import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
-import ModalWindow from './ModalWindow.jsx';
-import RegistrationForm from './RegistrationForm.jsx';
-import LoginForm from './LoginForm.jsx';
-import TextInput from './TextInput.jsx'
-import AppMenu from './AppMenu.jsx';
-import MineField from './MineField.jsx';
+import ModalWindow from './ModalWindow/ModalWindow.jsx';
+import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
+import LoginForm from './LoginForm/LoginForm.jsx';
+import AppMenu from './AppMenu/AppMenu.jsx';
+import MineField from './MineField/MineField.jsx';
 
 import './styles/global.styl';
 

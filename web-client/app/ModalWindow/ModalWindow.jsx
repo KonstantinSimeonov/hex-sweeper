@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import styles from './styles/modal-window.styl';
+import styles from './modal-window.styl';
 
 export default class ModalWindow extends Component {
 
@@ -19,7 +19,7 @@ export default class ModalWindow extends Component {
     render() {
         return (<div className="centered-container">
             <div className={styles.overlay} onClick={() => this.props.history.goBack()}></div>
-            <dialog className={this.state.visibility + ' ' + styles.modalWindow + ' inline-block width-33'}>
+            <dialog className={`${this.state.visibility} ${styles.modalWindow} inline-block width-33`}>
                 <h3>{this.props.title}</h3>
                 <div>{this.props.children}</div>
             </dialog>

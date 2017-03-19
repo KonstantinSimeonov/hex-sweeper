@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react';
 
-import TextInput from './TextInput.jsx';
-import styles from './styles/login-form.styl';
+import TextInput from '../TextInput/TextInput.jsx';
+import styles from './login-form.styl';
 
-import { post } from './utils/json-requester.js';
+import { post } from '../utils/json-requester.js';
 
 export default class LoginForm extends Component {
     constructor(props) {

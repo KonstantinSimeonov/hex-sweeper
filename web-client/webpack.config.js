@@ -14,8 +14,8 @@ module.exports = {
     entry: ['./app/index.jsx'],
     module: {
         loaders: [
-            { test: /\.jsx$/, include: `${__dirname}/app`, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
-            { test: /\.styl$/, include: `${__dirname}/app/styles`, loader: 'style-loader!css-loader!stylus-loader' },
+            { test: /\.styl$/, include: `${__dirname}/app/`, loader: 'style-loader!css-loader!stylus-loader' },
+            { test: /\.jsx$/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
             {
                 //IMAGE LOADER
                 test: /\.(jpe?g|png|gif|svg)$/,
