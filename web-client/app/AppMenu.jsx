@@ -12,9 +12,10 @@ export class AppMenu extends Component {
         this.state = {
             buttons: [
                 { text: 'Play', href: 'play', click: this.props.startGame },
-                { text: 'Hall of fame', href: 'hall-of-fame' },
+                { text: 'Ranking', href: 'hall-of-fame' },
                 { text: 'Register', href: 'register', click: this.props.register },
-                { text: 'Log in', href: 'login' }
+                { text: 'Log in', href: 'login' },
+                { text: 'Spectate', href: 'spectate' }
             ]
         };
 

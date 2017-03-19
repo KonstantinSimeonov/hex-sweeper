@@ -7,6 +7,7 @@ import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
 import ModalWindow from './ModalWindow.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
+import TextInput from './TextInput.jsx'
 import { AppMenu } from './AppMenu.jsx';
 import { MineField } from './MineField.jsx';
 
@@ -57,9 +58,7 @@ ReactDOM.render(
         <div>
             <AppMenu startGame={startGame} register={renderModalWindow} />
         </div>
-        <main id="game-container">
-
-        </main>
+        <main id="game-container"></main>
         <div id="modal"></div>
     </div>,
     document.getElementById('app'));

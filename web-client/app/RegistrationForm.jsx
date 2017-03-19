@@ -1,6 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
+
+import TextInput from './TextInput.jsx';
 import { post } from './utils/json-requester.js';
 
 import styles from './styles/registration-form.styl';
@@ -36,15 +38,27 @@ export default class RegistrationForm extends Component {
                 <fieldset>
                     <div>
                         <label htmlFor="username">Username</label>
-                        <div className="bottom-border-animated">
+                        {/*<div className="bottom-border-animated">
                             <input id="username" type="text" name="username" onChange={this.onChange.bind(this)} />
-                        </div>
+                        </div>*/}
+                        <TextInput
+                            name="username"
+                            placeholder="Between 3 and 10 latin letters"
+                            onChange={this.onChange.bind(this)}
+                            pattern={/^[a-z]{3,10}\d{0,5}$/i}
+                            patternErrorMessage="Only latin letters allowed"
+                            />
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
-                        <div className="bottom-border-animated">
+                        {/*<div className="bottom-border-animated">
                             <input id="password" type="text" name="password" onChange={this.onChange.bind(this)} />
-                        </div>
+                        </div>*/}
+                        <TextInput
+                            name="password"
+                            placeholder="Between 6 and 10 symbols"
+                            onChange={this.onChange.bind(this)}
+                            />
                     </div>
                 </fieldset>
                 <div>
