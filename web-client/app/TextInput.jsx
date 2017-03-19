@@ -21,11 +21,10 @@ export default class TextInput extends Component {
         const valueToValidate = event.target.value,
             { pattern, patternErrorMessage } = this.props;
 
-        if(Object.prototype.toString.call(pattern) === '[object RegExp]') {
-            console.log('hey');
-            if(!pattern.test(valueToValidate)) {
+        if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
+            if (!pattern.test(valueToValidate)) {
                 this.setState({ currentError: { message: patternErrorMessage }, isValid: false });
-            return;
+                return;
             }
 
         }

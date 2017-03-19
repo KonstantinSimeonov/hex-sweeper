@@ -7,6 +7,7 @@ import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
 import ModalWindow from './ModalWindow.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
+import LoginForm from './LoginForm.jsx';
 import TextInput from './TextInput.jsx'
 import { AppMenu } from './AppMenu.jsx';
 import { MineField } from './MineField.jsx';
@@ -48,15 +49,20 @@ function startGame() {
     socket.on('gameover', () => alert('noob'));
 }
 
-function renderModalWindow() {
-    const children = closeFn => (<RegistrationForm close={closeFn} />);
+function renderModalWindow(children) {
     ReactDOM.render(<ModalWindow title="Choose a username and password" getChildren={children} />, document.getElementById('modal'));
 }
+
+const renderRegistrationForm = closeFn => <RegistrationForm close={closeFn} />,
+    renderLoginForm = closeFn => <LoginForm close={closeFn} />;
 
 ReactDOM.render(
     <div>
         <div>
-            <AppMenu startGame={startGame} register={renderModalWindow} />
+            <AppMenu
+                startGame={startGame}
+                register={renderModalWindow.bind(null, renderRegistrationForm)}
+                login={renderModalWindow.bind(null, renderLoginForm)} />
         </div>
         <main id="game-container"></main>
         <div id="modal"></div>

@@ -14,7 +14,7 @@ export class AppMenu extends Component {
                 { text: 'Play', href: 'play', click: this.props.startGame },
                 { text: 'Ranking', href: 'hall-of-fame' },
                 { text: 'Register', href: 'register', click: this.props.register },
-                { text: 'Log in', href: 'login' },
+                { text: 'Log in', href: 'login', click: this.props.login },
                 { text: 'Spectate', href: 'spectate' }
             ]
         };

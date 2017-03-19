@@ -11,24 +11,24 @@ module.exports = ({ dataServices: { usersService }, serverConfig }) => ({
             .then(user => {
                 delete user.passwordHash;
                 delete user.passwordSalt;
-                res.send(201, user);
+                res.status(201).json(user);
             })
-            .catch(error => console.log(error.message) || res.send(400, { success: false, message: error.message }));
+            .catch(error => console.log(error.message) || res.status(500).json({ success: false, message: error.message }));
     },
     login(req, res) {
-        const { username, password } = req.body;
+        const { username, password } = req.body.user;
 
         usersService
             .findByCredentials(username, password)
             .then(user => {
                 console.log('hits promise');
                 if (!user) {
-                    return res.send(400, { success: false, message: 'Invalid username or password' });
+                    return res.status(200).json({ success: false, message: 'Invalid username or password' });
                 }
 
                 const payload = { username: user.username, id: user._id },
                     token = jwt.sign(payload, serverConfig.secret, { expiresIn: 1440 })
-                res.send(200, {
+                res.status(200).json({
                     success: true,
                     token
                 });
