@@ -10,6 +10,7 @@ import { post } from './utils/json-requester.js';
 export default class LoginForm extends Component {
     constructor(props) {
         super(props);
+
         this.state = { username: '', password: '' }
     }
 
@@ -51,7 +52,7 @@ export default class LoginForm extends Component {
                 </fieldset>
                 <div>
                     <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
-                    <a className="custom-btn" onClick={this.props.close}>Close</a>
+                    <a className="custom-btn" onClick={() => this.props.history.goBack()}>Close</a>
                 </div>
             </form>
         </div>)

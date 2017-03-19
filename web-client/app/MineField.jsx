@@ -16,7 +16,7 @@ function cellType(cellValue) {
     }
 }
 
-export function MineField(props) {
+export default function MineField(props) {
     console.log(props.onMove);
 
     return (<div className={cssStyles.mineField}>

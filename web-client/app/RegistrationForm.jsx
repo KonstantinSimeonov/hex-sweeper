@@ -11,14 +11,15 @@ export default class RegistrationForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            username: '',
-            password: ''
-        };
+        this.state = { username: '', password: '' };
     }
 
     onChange(event) {
         this.setState({ [event.target.name]: event.target.value });
+    }
+
+    onClose() {
+        this.props.history.push('/');
     }
 
     submit() {
@@ -26,7 +27,8 @@ export default class RegistrationForm extends Component {
 
         post('http://localhost:6969/api/users', { user: { username, password } })
             .then(success => {
-                this.props.close();
+                this.props.history.push('/');
+                this.props.history.push('/login');
             })
             .catch(console.log);
     }
@@ -43,7 +45,7 @@ export default class RegistrationForm extends Component {
                             onChange={this.onChange.bind(this)}
                             pattern={/^[a-z]{3,10}\d{0,5}$/i}
                             patternErrorMessage="Only latin letters allowed"
-                            />
+                        />
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
@@ -52,12 +54,12 @@ export default class RegistrationForm extends Component {
                             type="password"
                             placeholder="Between 6 and 10 symbols"
                             onChange={this.onChange.bind(this)}
-                            />
+                        />
                     </div>
                 </fieldset>
                 <div>
                     <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
-                    <a className="custom-btn" onClick={this.props.close}>Close</a>
+                    <a className="custom-btn" onClick={this.onClose.bind(this)}>Close</a>
                 </div>
             </form>
         </div>)

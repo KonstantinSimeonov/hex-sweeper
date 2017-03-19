@@ -1,20 +1,20 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
-
 
 import styles from './styles/app-menu.styl';
 
-export class AppMenu extends Component {
+export default class AppMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
             buttons: [
-                { text: 'Play', href: 'play', click: this.props.startGame },
+                { text: 'Play', href: 'play' },
                 { text: 'Ranking', href: 'hall-of-fame' },
-                { text: 'Register', href: 'register', click: this.props.register },
-                { text: 'Log in', href: 'login', click: this.props.login },
+                { text: 'Register', href: 'register' },
+                { text: 'Log in', href: 'login' },
                 { text: 'Spectate', href: 'spectate' }
             ]
         };
@@ -22,12 +22,17 @@ export class AppMenu extends Component {
     }
 
     render() {
-        const menuLinks = this.state
-                                .buttons
-                                .map(btnInfo => <li key={btnInfo.href} onClick={btnInfo.click} className={styles.menuItem}>
-                                                    <a className={styles.menuLink} href={'#' + btnInfo.href}>{btnInfo.text}
-                                                    </a></li>);
-
-        return (<nav id="app-nav-menu" className={styles.appMenu}><ul>{menuLinks}</ul><hr className={styles.bottomBorder} /></nav>);
+        return (
+            <nav id="app-nav-menu" className={styles.appMenu}>
+                <ul>
+                    {this.state.buttons.map(button => (
+                        <li key={button.href} className={styles.menuItem}>
+                            <Link to={button.href} className={styles.menuLink}>{button.text}</Link>
+                        </li>
+                    ))}
+                </ul>
+                <hr className={styles.bottomBorder} />
+            </nav>
+        );
     }
 }

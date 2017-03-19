@@ -2,19 +2,17 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import $ from 'jquery';
 import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
-import ModalWindow from './ModalWindow.jsx';
-import RegistrationForm from './RegistrationForm.jsx';
-import LoginForm from './LoginForm.jsx';
-import TextInput from './TextInput.jsx'
-import { AppMenu } from './AppMenu.jsx';
-import { MineField } from './MineField.jsx';
+import App from './App.jsx';
 
 import './styles/global.styl';
 
-function renderField(field) {
+ReactDOM.render(<App />, document.getElementById('app'));
+
+/*function renderField(field) {
     ReactDOM.render(<div>
         <MineField onMove={move} field={field} />
     </div>, document.getElementById('game-container'));
@@ -67,4 +65,4 @@ ReactDOM.render(
         <main id="game-container"></main>
         <div id="modal"></div>
     </div>,
-    document.getElementById('app'));
+    document.getElementById('app'));*/
