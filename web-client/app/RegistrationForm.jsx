@@ -48,8 +48,8 @@ export default class RegistrationForm extends Component {
                     </div>
                 </fieldset>
                 <div>
-                    <a className="btn-submit" onClick={this.submit.bind(this)}>Submit</a>
-                    <a className="btn-submit" onClick={this.props.close}>Close</a>
+                    <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
+                    <a className="custom-btn" onClick={this.props.close}>Close</a>
                 </div>
             </form>
         </div>)

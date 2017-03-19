@@ -20,8 +20,13 @@ module.exports = function (server) {
         socket.emit('fieldReady', field);
 
         socket.on('move', data => {
-            console.log('aide');
+            console.log('move');
             const { row, col } = data;
+
+            if(field[row][col] === -1) {
+                socket.emit('gameover');
+                return;
+            }
 
             const updates = [];
 

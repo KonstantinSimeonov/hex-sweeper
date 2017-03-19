@@ -15,7 +15,12 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.jsx$/, include: `${__dirname}/app`, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
-            { test: /\.styl$/, include: `${__dirname}/app/styles`, loader: 'style-loader!css-loader!stylus-loader' }
+            { test: /\.styl$/, include: `${__dirname}/app/styles`, loader: 'style-loader!css-loader!stylus-loader' },
+            {
+                //IMAGE LOADER
+                test: /\.(jpe?g|png|gif|svg)$/,
+                loader: 'file-loader'
+            },
         ]
     },
     output: {

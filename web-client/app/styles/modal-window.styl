@@ -9,19 +9,19 @@
     height: 100%
 
 :local .modalWindow
-    position: relative
+    position: fixed
     z-index: 9999
     display: flex
     align-items: center
     justify-content: center
-    border: 1px solid blue
-    background-color: white
-    color: #797C80
+    border: 2px solid #4B9BD4
+    background: #333333
+    color: gray
     transition: .5s top
-    top: -40em
+    top: -640px
 
     h3
         margin-left: 5%
 
     &.visible
-        top: 0
+        top: 10%

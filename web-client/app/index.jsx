@@ -43,6 +43,8 @@ function startGame() {
 
         renderField(field);
     });
+
+    socket.on('gameover', () => alert('noob'));
 }
 
 function renderModalWindow() {
