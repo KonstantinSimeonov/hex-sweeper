@@ -16,7 +16,8 @@ export default class GameSetupForm extends Component {
             difficulties: [],
             selected: '',
             fieldSize: null,
-            minesCount: null
+            minesCount: null,
+            spectatable: true
         };
 
         httpGet('http://localhost:6969/api/difficulties')
@@ -34,9 +35,9 @@ export default class GameSetupForm extends Component {
 
     onSubmit() {
         if(this.state.selected && this.state.selected !== 'custom') {
-            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&difficulty=${this.state.selected}`);
+            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&difficulty=${this.state.selected}&spectatable=${this.state.spectatable}`);
         } else {
-            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&minesCount=${this.state.minesCount}`);
+            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&minesCount=${this.state.minesCount}&spectatable=${this.state.spectatable}`);
         }
     }
     

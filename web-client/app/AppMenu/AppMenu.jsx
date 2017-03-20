@@ -7,7 +7,7 @@ import $ from 'jquery';
 import styles from './app-menu.styl';
 
 const buttons = [
-    { text: 'Play', href: 'newgame' },
+    { text: 'Play', href: '/newgame' },
     { text: 'Spectate', href: 'spectate' },
     { text: 'Ranking', href: 'hall-of-fame' }
 ],

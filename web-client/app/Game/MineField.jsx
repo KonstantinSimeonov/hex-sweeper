@@ -17,8 +17,10 @@ function cellType(cellValue) {
 }
 
 export default function MineField(props) {
-    return (<div className={cssStyles.mineField}>
-        {props.field.map((fieldRow, row) => 
-        (<ul key={row}>{fieldRow.map((cellValue, col) => <Cell onClick={() => props.onMove(row, col)} key={row + ';' + col} value={cellValue} cellType={cellType(cellValue)}/>)}</ul>))}
-    </div>);
+    return (<table className={cssStyles.mineField}>
+        <tbody>
+            {props.field.map((fieldRow, row) => 
+        (<tr style={ {overflow: 'visible'} } key={row}>{fieldRow.map((cellValue, col) => <Cell onClick={() => props.onMove(row, col)} key={row + ';' + col} value={cellValue} cellType={cellType(cellValue)}/>)}</tr>))}
+        </tbody>
+    </table>);
 }

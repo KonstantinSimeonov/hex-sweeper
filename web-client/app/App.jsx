@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, location } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory.js'
 
 import $ from 'jquery';
@@ -11,7 +11,7 @@ import ModalWindow from './ModalWindow/ModalWindow.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import LoginForm from './LoginForm/LoginForm.jsx';
 import AppMenu from './AppMenu/AppMenu.jsx';
-import MineField from './MineField/MineField.jsx';
+import Game from './Game/Game.jsx';
 import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
 
 import './styles/global.styl';
@@ -24,7 +24,8 @@ export default class App extends Component {
     render() {
         const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
             LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />,
-            GameSetup = ({ history }) => <GameSetupForm history={history} />;
+            GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
+            GameComponent = ({ location }) => <Game location={location} />;
 
         return (
             <Router history={createBrowserHistory()}>
@@ -35,6 +36,7 @@ export default class App extends Component {
                         <Route path="/register" component={RegForm} />
                         <Route path="/login" component={LogForm} />
                         <Route path="/newgame" component={GameSetup} />
+                        <Route path="/play" component={GameComponent}/>
                     </main>
                 </div>
             </Router>

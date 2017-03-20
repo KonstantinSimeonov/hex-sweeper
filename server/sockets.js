@@ -13,8 +13,8 @@ module.exports = function (server) {
 
     io.on('connection', (socket) => {
         console.log('connected');
-        const { size, mines } = socket.request._query;
-
+        const { fieldSize: size, minesCount: mines } = socket.request._query;
+        console.log(socket.request._query);
         const field = createField(+size, +mines);
 
         socket.emit('fieldReady', field);
