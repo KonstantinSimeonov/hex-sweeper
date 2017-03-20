@@ -23,7 +23,11 @@ export default class LoginForm extends Component {
         post('http://localhost:6969/api/authenticate', { user: { username, password } })
             .then(response => {
                 localStorage.setItem('token', response.token);
-                console.log(response);
+                localStorage.setItem('username', username);
+                this.props.history.goBack();
+                const loggedInEvent = new CustomEvent('login', { detail: username });
+                window.dispatchEvent(loggedInEvent);
+                
             })
             .catch(console.log);
     }

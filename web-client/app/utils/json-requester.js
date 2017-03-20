@@ -3,8 +3,8 @@
 import $ from 'jquery';
 
 export function get(url, query) {
-    const queryString = Object.entries(query).map(([key, value]) => key + '=' + value).join('&'),
-        queryUrl = url + (queryString ? '?' + queryString : '');
+    const queryString = Object.prototype.toString.call(query) === '[object Object]' ? Object.entries(query).map(([key, value]) => key + '=' + value).join('&') : '',
+        queryUrl = url + queryString;
 
     return new Promise((resolve, reject) => {
         $.ajax(queryUrl, {

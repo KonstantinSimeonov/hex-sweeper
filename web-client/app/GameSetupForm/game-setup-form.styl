@@ -1,0 +1,77 @@
+:local .gameSetupForm
+    position: relative
+    background-color: rgba(0, 0, 0, 0.75)
+    display: inline-block
+    padding: 2em
+    border: 2px solid #333333
+    color: lightgray
+    width: 90%
+    height: 20em
+
+    .inputGroup
+        width: 50%
+
+    .inputGroup.play
+        position: absolute
+        height: 100%
+        top: 0
+        right: 0
+        width: 25%
+        padding: 5em 10em 0 0
+
+    .playBtn
+        cursor: pointer
+        font-size: 20px
+
+    .hexagon
+        width: 10em;
+        padding-top: 1.5em
+        height: 4em;
+        background: lighten(#530D88, 15);
+        position: relative;
+        text-align: center
+        transition: 1s opacity
+        opacity: 0.5
+
+        &:hover
+            opacity: 0.9
+
+    .hexagon:before
+        content: "";
+        position: absolute;
+        top: -2.5em;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 5em solid transparent;
+        border-right: 5em solid transparent;
+        border-bottom: 2.5em solid lighten(#530D88, 15);
+
+    .hexagon:after
+        content: "";
+        position: absolute;
+        bottom: -2.5em;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 5em solid transparent;
+        border-right: 5em solid transparent;
+        border-top: 2.5em solid lighten(#530D88, 15);
+
+    .difficulties li
+        display: inline-block
+        color: lightgray
+        padding: 0.5em
+        margin: 0.5em
+        text-transform: capitalize
+        cursor: pointer
+        opacity: 0.5
+
+        &.selected
+            color: lighten(#530D88, 15)
+            opacity: 1
+
+        &.selected::after
+            background-color: lighten(#530D88, 15)
+
+            

@@ -12,6 +12,7 @@ import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import LoginForm from './LoginForm/LoginForm.jsx';
 import AppMenu from './AppMenu/AppMenu.jsx';
 import MineField from './MineField/MineField.jsx';
+import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
 
 import './styles/global.styl';
 
@@ -21,16 +22,20 @@ export default class App extends Component {
     }
 
     render() {
-        const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history}/>}/>,
-            LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />;
+        const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
+            LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />,
+            GameSetup = ({ history }) => <GameSetupForm history={history} />;
 
         return (
             <Router history={createBrowserHistory()}>
                 <div>
-                    <AppMenu />
-                    <Route path="/" component={() => <div></div>} />
-                    <Route path="/register" component={RegForm} />
-                    <Route path="/login" component={LogForm} />
+                    <Route path="*" component={AppMenu} />
+                    <main className="mainContent">
+                        <Route path="/" component={() => <div></div>} />
+                        <Route path="/register" component={RegForm} />
+                        <Route path="/login" component={LogForm} />
+                        <Route path="/newgame" component={GameSetup} />
+                    </main>
                 </div>
             </Router>
         );
