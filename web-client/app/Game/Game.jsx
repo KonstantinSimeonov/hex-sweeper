@@ -8,6 +8,7 @@ import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
 import generateField from '../../../shared/generate-field.js';
 
 import MineField from './MineField.jsx';
+import Timer from '../Timer/Timer.jsx';
 
 import styles from './game.styl';
 
@@ -26,11 +27,13 @@ export default class Game extends Component {
 
         this.state = { field };
 
-        const socket = this.socket = io('http://localhost:6969', { transports: ['websocket'] }),
-            token = localStorage.getItem('token');
+        const token = localStorage.getItem('token'),
+            socket = this.socket = io('http://localhost:6969', { transports: ['websocket'], query: { token } });
 
         socket.on('updates', this.onUpdates.bind(this));
-        socket.emit('initGame', { fieldSize, minesCount, spectatable, token });
+        socket.on('save:success', () => console.log('bez tvar'));
+        socket.on('win', () => console.log('i wonz'));
+        socket.emit('initGame', { fieldSize, minesCount, spectatable });
     }
 
     componentWillUnmount() {
@@ -43,6 +46,10 @@ export default class Game extends Component {
 
     onCellMarker(row, col) {
         this.socket.emit('mark', { row, col });
+    }
+
+    onSaveClick() {
+        this.socket.emit('save');
     }
 
     onUpdates(updates) {
@@ -67,6 +74,10 @@ export default class Game extends Component {
 
     render() {
         return (<div className={styles.gameContainer}>
+            <div>
+                <Timer />
+                {localStorage.getItem('token') ? <a className="custom-btn" onClick={this.onSaveClick.bind(this)}>Save</a> : ''}
+            </div>
             <MineField field={this.state.field} onCellClick={this.onPlayerMove.bind(this)} />
         </div>);
     }

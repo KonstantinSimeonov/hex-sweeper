@@ -29,8 +29,6 @@ function countAdjMines(neighboringCells, field) {
 function revealCellAt(row, col, field, cb) {
     const nodes = [{ row, col }];
 
-    console.log('----------------------------');
-
     while (nodes.length) {
         const current = nodes.pop();
 
@@ -47,15 +45,11 @@ function revealCellAt(row, col, field, cb) {
             field[current.row][current.col] = options.emptyCellToken;
             nodes.push(...currentNodeNeighbors.filter(x => field[x.row][x.col] !== options.emptyCellToken));
         }
-        console.log(current, field[current.row][current.col]);
 
         if (cb) {
             cb(current, field[current.row][current.col]);
         }
     }
-
-    console.log('----------------------------');
-
 }
 
 module.exports = opts => {

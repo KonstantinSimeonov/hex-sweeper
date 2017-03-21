@@ -14,6 +14,8 @@ import AppMenu from './AppMenu/AppMenu.jsx';
 import Game from './Game/Game.jsx';
 import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
 
+import Timer from './Timer/Timer.jsx';
+
 import './styles/global.styl';
 
 export default class App extends Component {

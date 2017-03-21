@@ -6,10 +6,12 @@ const rawStorage = {
 
 // TODO: do some garbage collection
 module.exports = {
-    storeGame(userId, field, spectatable) {
+    storeGame(userId, field, details) {
+        details.minesLeft = details.minesCount;
+        console.log(details.minesLeft);
         rawStorage.gamesMap[userId] = {
             field,
-            spectatable,
+            details,
             createdOn: new Date(),
             lastUpdatedOn: new Date(),
             updates: []
@@ -19,9 +21,10 @@ module.exports = {
         return rawStorage.gamesMap[userId];
     },
     update(userId, updates) {
-        rawStorage.gamesMap[userId].updates.push(...updates);
-        rawStorage.gamesMap[userId].lastUpdatedOn = new Date();
-        return this;
+        const gameToUpdate = rawStorage.gamesMap[userId];
+        gameToUpdate.details.minesLeft -= updates.length;
+        gameToUpdate.updates.push(...updates);
+        gameToUpdate.lastUpdatedOn = new Date();
     },
     cleanAllBefore(date) {
         for(const userId of rawStorage.gamesMap) {

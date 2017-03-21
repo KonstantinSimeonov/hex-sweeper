@@ -7,7 +7,6 @@ const server = express(),
     socketServer = require('http').createServer(server),
     serverConfig = require('./server-config');
 
-require('./sockets')(socketServer, serverConfig);
 
 function cors(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
@@ -36,6 +35,7 @@ const serverPromise = dbConnect
             controllers = require('./controllers')({ dataServices, serverConfig }),
             middlewares = { authMiddleware: require('./middlewares/auth-middleware')({ dataServices, serverConfig }) };
 
+        require('./sockets')(socketServer, { serverConfig, dataServices });
         require('./routing')({ server, controllers, middlewares });
     });
 

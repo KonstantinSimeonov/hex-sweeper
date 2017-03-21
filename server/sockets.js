@@ -6,9 +6,9 @@ const GameSession = require('./sockets/game-session'),
 const gamingSessions = {},
     spectatingSessions = {};
 
-module.exports = function (server, serverConfig) {
+module.exports = function (server, { serverConfig, dataServices: { gamesService } }) {
     const io = require('socket.io')(server, { transports: ['websocket'] });
-
+    console.log(gamesService);
     io.on('connection', socket => {
         console.log('je suis konektive');
         const isSpectate = socket.request._query.type === 'spectate';
@@ -21,7 +21,7 @@ module.exports = function (server, serverConfig) {
 
             // TODO: clean up spectator sessions here
         } else {
-            const gameSession = GameSession.from(socket);
+            const gameSession = GameSession.from(socket, gamesService);
 
             gamingSessions[gameSession.userSession.id] = gameSession;
             socket.on('disconnect', () => { delete gamingSessions[gameSession.userSession.id]; })

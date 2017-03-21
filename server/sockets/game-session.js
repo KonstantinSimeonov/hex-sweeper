@@ -6,16 +6,16 @@ const jwt = require('jsonwebtoken'),
 // TODO: dependency injection
 const { createField, revealCellAt } = require('../logic'),
     gameStorage = require('./games-storage'),
-    serverConfig = require('../server-config'),
-    { gamesService } = require('../data/services');
+    serverConfig = require('../server-config');
 
 class GameSession {
-    static from(socket) {
-        return new GameSession(socket);
+    static from(socket, gamesService) {
+        return new GameSession(socket, gamesService);
     }
 
-    constructor(socket) {
+    constructor(socket, gamesService) {
         this.socket = socket;
+        this.gamesService = gamesService;
         const { token } = socket.request._query;
 
         let anonymous = !token;
@@ -32,11 +32,9 @@ class GameSession {
         if (anonymous) {
             this.userSession = { id: uuid.v1(), anonymous: true };
             this.socket.emit('idAssigned', jwt.sign(JSON.stringify(this.userSession), serverConfig.secret));
-        }
-
-        if (!anonymous) {
+        } else {
             this.socket.on('save', this.saveGame.bind(this));
-            this.socket.on('load', this.loadGame.bind(this));
+            // this.socket.on('load', this.loadGame.bind(this));
         }
 
         this.socket.on('move', this.move.bind(this));
@@ -51,7 +49,7 @@ class GameSession {
         } = request,
             field = createField(fieldSize, minesCount);
 
-        gameStorage.storeGame(this.userSession.id, field, spectatable);
+        gameStorage.storeGame(this.userSession.id, field, { spectatable, minesCount });
 
         this.socket.emit('initGame:success');
     }
@@ -70,11 +68,16 @@ class GameSession {
 
         gameStorage.update(this.userSession.id, updates);
         this.socket.emit('updates', updates);
+
+        if(game.details.minesLeft <= 0) {
+            this.socket.emit('win');
+        }
     }
 
     saveGame() {
-        gamesService.save(gameStorage.getGame(this.userSession.id))
-            .then(() => this.socket.emit('save:successful'))
+        console.log('aaaa are we');
+        this.gamesService.save(gameStorage.getGame(this.userSession.id))
+            .then(() => this.socket.emit('save:success'))
             .catch(console.log);
     }
 }
