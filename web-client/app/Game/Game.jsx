@@ -12,7 +12,29 @@ import Timer from '../Timer/Timer.jsx';
 
 import styles from './game.styl';
 
+function bin(n) {
+    let res = '';
+
+    do {
+        res = (n & 1) + res;
+        n >>>= 1;
+    } while(n !== 0);
+
+    return res;
+}
+
+const rowMask = (1 << 17) - 1,
+    colMask = (1 << 10) - 1,
+    valueMask = (1 << 4) - 1;
+
+console.log(bin(rowMask), bin(colMask), bin(valueMask));
+console.log(rowMask, colMask, valueMask);
+
 export default class Game extends Component {
+    static deserializeCellUpdate(cellUpdate) {
+        return [(cellUpdate & rowMask) >> 11, (cellUpdate & colMask) >> 4, cellUpdate & valueMask];
+    }
+
     constructor(props) {
         super(props);
 
@@ -29,11 +51,12 @@ export default class Game extends Component {
 
         const token = localStorage.getItem('token'),
             socket = this.socket = io('http://localhost:6969', { transports: ['websocket'], query: { token } });
-
+            console.log(token);
         socket.on('updates', this.onUpdates.bind(this));
         socket.on('save:success', () => console.log('bez tvar'));
         socket.on('win', () => console.log('i wonz'));
-        socket.emit('initGame', { fieldSize, minesCount, spectatable });
+        // socket.emit('initGame', { fieldSize, minesCount, spectatable });
+        socket.emit('load');
     }
 
     componentWillUnmount() {
@@ -55,7 +78,9 @@ export default class Game extends Component {
     onUpdates(updates) {
         const updatedRows = [];
 
-        for (const { row, col, value } of updates) {
+        for (const serializedUpdate of updates) {
+            const [row, col, value] = Game.deserializeCellUpdate(serializedUpdate);
+            console.log(row, col, value, serializedUpdate);
             if (!updatedRows[row]) {
                 updatedRows[row] = this.state.field[row].slice();
             }

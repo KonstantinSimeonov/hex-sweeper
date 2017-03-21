@@ -1,7 +1,9 @@
 'use strict';
 
+const gameStorage = require('../sockets/games-storage');
+
 module.exports = ({ dataServices, serverConfig }) => ({
-    getDifficulties(req, res) {
-        res.status(200).json({ difficulties: ['low', 'medium', 'hard'] });
+    getSpectatable(req, res) {
+        res.status(200).json(gameStorage.getSpectatableGames().map(sg => sg.tmpId));
     }
 });

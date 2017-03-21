@@ -10,9 +10,9 @@ function cellType(cellValue) {
     switch (cellValue) {
         case null: return 'cut';
         case -1: return 'mine';
-        case -2: return 'empty';
         case 1: return 'one';
         case 2: return 'two';
+        case 7: return 'empty';
     }
 }
 

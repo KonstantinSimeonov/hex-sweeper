@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = (server, { gamesController }) => {
-    server.get('/api/difficulties', gamesController.getDifficulties);
+    server.get('/api/spectatable', gamesController.getSpectatable);
 };

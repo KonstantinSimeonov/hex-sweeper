@@ -12,7 +12,7 @@ const fieldFillerOptions = {
 const { getFieldFiller } = require('./field-filler'),
     getFieldGenerator = require('./generate-field'),
     getTraversalLogic = require('./traverse-field'),
-    { revealCellAt } = getTraversalLogic({ emptyCellToken: -2, mineCellToken: -1 });
+    { revealCellAt } = getTraversalLogic({ emptyCellToken: 7, mineCellToken: -1 });
 
 module.exports = {
     createField(size, minesCount) {

@@ -9,14 +9,14 @@ class SpectateSession {
 
     constructor(socket, gameSession) {
         this.socket = socket;
-        const { userId } = socket.request.query,
-            game = gameStorage.getGame(userId);
+        const { gameTmpId } = socket.request.query,
+            game = gameStorage.getGameByTmpId(gameTmpId);
 
         if(game) {
             this.socket.emit('spectate:success', game.field);
             gameSession.socket.on('updates', updates => this.socket.emit('updates', updates));
         } else {
-            this.socket.emit('spectate:error', { message: 'Game not found!' })
+            this.socket.emit('spectate:error', { message: 'Game not found!' });
         }
     }
 }

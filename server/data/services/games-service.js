@@ -6,17 +6,19 @@ const { hashing } = require('../../utils');
 
 const serviceFunctions = ({ games }) => ({
     name: 'gamesService',
-    save(game, startedOn, userId) {
-        console.log('ok');
+    save(game, userId) {
+        console.log(game);
         return games.insert({
-            game,
-            startedOn,
-            userId
+            field: game.field,
+            updates: game.updates,
+            details: game.details,
+            userId: userId
         })
-        .then(({ ops }) => ops[0]);
+        .then(({ ops }) => ops[0])
+        .then(console.log);
     },
-    recover(gameId) {
-        return games.findOne({ _id: mongodb.ObjectID(gameId) });
+    recoverLast(userId) {
+        return games.find({ userId }).sort({ lastUpdatedOn: -1 }).limit(1).toArray();
     }
 });
 
