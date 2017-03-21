@@ -12,7 +12,9 @@ import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import LoginForm from './LoginForm/LoginForm.jsx';
 import AppMenu from './AppMenu/AppMenu.jsx';
 import Game from './Game/Game.jsx';
+import PlayerGame from './Game/PlayerGame.jsx';
 import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
+import SpectatableGame from './Game/SpectatedGame.jsx';
 import Timer from './Timer/Timer.jsx';
 import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.jsx';
 
@@ -27,8 +29,9 @@ export default class App extends Component {
         const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
             LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />,
             GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
-            GameComponent = ({ location }) => <Game location={location} />,
-            SpectateComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList />} />;
+            GameComponent = ({ location }) => <PlayerGame location={location} />,
+            SpectateListComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList history={history} />} />,
+            SpectateGameComponent = ({ match }) => <SpectatableGame match={match} />;
 
         return (
             <Router history={createBrowserHistory()}>
@@ -40,7 +43,8 @@ export default class App extends Component {
                         <Route path="/login" component={LogForm} />
                         <Route path="/newgame" component={GameSetup} />
                         <Route path="/play" component={GameComponent}/>
-                        <Route path="/spectate" component={SpectateComponent} />
+                        <Route path="/spectate" component={SpectateListComponent} />
+                        <Route path="/spectate1/:id" component={SpectateGameComponent} />
                     </main>
                 </div>
             </Router>

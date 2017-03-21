@@ -21,7 +21,7 @@ export default class SpectatableGamesList extends Component {
         let content;
 
         if(this.state.spectatable) {
-            content = <ul className={styles.gamesList}>{this.state.spectatable.map(gameId => <li key={gameId}>{gameId}</li>)}</ul>;
+            content = <ul className={styles.gamesList}>{this.state.spectatable.map(gameId => <li key={gameId} onClick={() => this.props.history.push('/spectate1/' + gameId)}>{gameId}</li>)}</ul>;
         } else {
             content = '';
         }

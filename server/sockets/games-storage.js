@@ -1,7 +1,5 @@
 'use strict';
 
-const uuid = require('node-uuid');
-
 const rawStorage = {
     gamesMap: Object.create(null),
     spectatableGames: [],
@@ -10,7 +8,7 @@ const rawStorage = {
 
 // TODO: do some garbage collection
 module.exports = {
-    storeGame(userId, field, details) {
+    storeGame(userId, gameId, field, details) {
         details.minesLeft = details.minesCount;
         const gameToStore = {
             field,
@@ -18,7 +16,7 @@ module.exports = {
             createdOn: new Date(),
             lastUpdatedOn: new Date(),
             updates: [],
-            tmpId: uuid.v1()
+            tmpId: gameId
         };
 
         rawStorage.gamesById[gameToStore.tmpId] = gameToStore;
@@ -32,7 +30,6 @@ module.exports = {
         return rawStorage.gamesById[tmpId];
     },
     update(userId, updates) {
-        // console.log(updates);
         const gameToUpdate = rawStorage.gamesMap[userId];
         gameToUpdate.details.minesLeft -= updates.length;
         gameToUpdate.updates.push(...updates);

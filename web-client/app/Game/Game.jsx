@@ -5,30 +5,15 @@ import React, { Component } from 'react';
 import io from '../../node_modules/socket.io-client/dist/socket.io.min.js'
 
 import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
-import generateField from '../../../shared/generate-field.js';
 
 import MineField from './MineField.jsx';
 import Timer from '../Timer/Timer.jsx';
 
 import styles from './game.styl';
 
-function bin(n) {
-    let res = '';
-
-    do {
-        res = (n & 1) + res;
-        n >>>= 1;
-    } while(n !== 0);
-
-    return res;
-}
-
 const rowMask = (1 << 17) - 1,
     colMask = (1 << 10) - 1,
     valueMask = (1 << 4) - 1;
-
-console.log(bin(rowMask), bin(colMask), bin(valueMask));
-console.log(rowMask, colMask, valueMask);
 
 export default class Game extends Component {
     static deserializeCellUpdate(cellUpdate) {
@@ -38,41 +23,19 @@ export default class Game extends Component {
     constructor(props) {
         super(props);
 
-        const urlQuery = new URLSearchParams(props.location.search),
-            fieldSize = +urlQuery.get('fieldSize'),
-            minesCount = +urlQuery.get('minesCount'),
-            spectatable = urlQuery.get('spectatable'),
-            field = generateField({
-                getCell() { return 0; },
-                getNullCell() { return null; }
-            }, fieldSize);
+        this.state = { field: [] };
+    }
 
-        this.state = { field };
-
-        const token = localStorage.getItem('token'),
-            socket = this.socket = io('http://localhost:6969', { transports: ['websocket'], query: { token } });
-            console.log(token);
-        socket.on('updates', this.onUpdates.bind(this));
-        socket.on('save:success', () => console.log('bez tvar'));
-        socket.on('win', () => console.log('i wonz'));
-        // socket.emit('initGame', { fieldSize, minesCount, spectatable });
-        socket.emit('load');
+    connect(options = {}) {
+        const token = localStorage.getItem('token');
+        options.token = token;
+        this.socket = io('http://localhost:6969', { transports: ['websocket'], query: options });
+        this.socket.on('updates', this.onUpdates.bind(this));
+        this.socket.on('win', () => console.log('i wonz'));
     }
 
     componentWillUnmount() {
         this.socket.disconnect();
-    }
-
-    onPlayerMove(row, col) {
-        this.socket.emit('move', { row, col });
-    }
-
-    onCellMarker(row, col) {
-        this.socket.emit('mark', { row, col });
-    }
-
-    onSaveClick() {
-        this.socket.emit('save');
     }
 
     onUpdates(updates) {
@@ -103,7 +66,7 @@ export default class Game extends Component {
                 <Timer />
                 {localStorage.getItem('token') ? <a className="custom-btn" onClick={this.onSaveClick.bind(this)}>Save</a> : ''}
             </div>
-            <MineField field={this.state.field} onCellClick={this.onPlayerMove.bind(this)} />
+            <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : ''} />
         </div>);
     }
 }

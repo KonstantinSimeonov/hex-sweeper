@@ -18,6 +18,7 @@ class GameSession {
     }
 
     constructor(socket, gamesService) {
+        this.spectators = [];
         this.socket = socket;
         this.gamesService = gamesService;
         console.log(socket.request._query);
@@ -26,14 +27,10 @@ class GameSession {
         let anonymous = !token;
 
         if (token) {
-            console.log(`token: ${token}`);
             try {
                 this.userSession = jwt.verify(token, serverConfig.secret);
-                console.log('work');
             } catch (error) {
-                console.log(error);
                 anonymous = true;
-                console.log('zdr');
             }
         }
 
@@ -47,6 +44,7 @@ class GameSession {
 
         this.socket.on('move', this.move.bind(this));
         this.socket.on('initGame', this.initGame.bind(this));
+        this.gameId = uuid.v1();
     }
 
     initGame(request) {
@@ -57,8 +55,7 @@ class GameSession {
         } = request,
             field = createField(fieldSize, minesCount);
 
-        gameStorage.storeGame(this.userSession.id, field, { spectatable, minesCount });
-
+        gameStorage.storeGame(this.userSession.id, this.gameId, field, { spectatable, minesCount });
         this.socket.emit('initGame:success');
     }
 
@@ -66,17 +63,13 @@ class GameSession {
         const game = gameStorage.getGame(this.userSession.id),
             updates = [];
 
-        revealCellAt(row, col, game.field, function (coordinates, newValue) {
+        revealCellAt(row, col, game.field, (coordinates, newValue) => {
             updates.push(serializeCellUpdate(coordinates.row, coordinates.col, newValue));
-            // updates.push({
-            //     row: coordinates.row,
-            //     col: coordinates.col,
-            //     value: newValue
-            // });
         });
 
         gameStorage.update(this.userSession.id, updates);
         this.socket.emit('updates', updates);
+        this.spectators.forEach(spec => spec.socket.emit('updates', updates));
 
         if (game.details.minesLeft <= 0) {
             this.socket.emit('win');
@@ -100,8 +93,10 @@ class GameSession {
             this.gamesService.recoverLast(userId)
                 .then(([game]) => {
                     gameStorage.storeGame(userId, game.field, game.details);
-                    this.socket.emit('load:success');
-                    this.socket.emit('updates', game.updates);
+                    const { updates, details } = game;
+
+                    this.socket.emit('load:success', { size: (game.field.length + 1) / 2 });
+                    this.socket.emit('updates', { updates, details });
                 })
                 .catch(() => this.socket.emit('load:failure'));
         }
