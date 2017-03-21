@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-
 import io from '../../node_modules/socket.io-client/dist/socket.io.min.js'
 
 import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
@@ -16,6 +15,7 @@ const rowMask = (1 << 17) - 1,
     valueMask = (1 << 4) - 1;
 
 export default class Game extends Component {
+    // TODO: shared code? 
     static deserializeCellUpdate(cellUpdate) {
         return [(cellUpdate & rowMask) >> 11, (cellUpdate & colMask) >> 4, cellUpdate & valueMask];
     }
@@ -38,12 +38,15 @@ export default class Game extends Component {
         this.socket.disconnect();
     }
 
+    /**
+     * Update only the rows which contain an update.
+     * Executed on socket event emitted from the server.
+     */
     onUpdates(updates) {
         const updatedRows = [];
 
         for (const serializedUpdate of updates) {
             const [row, col, value] = Game.deserializeCellUpdate(serializedUpdate);
-            console.log(row, col, value, serializedUpdate);
             if (!updatedRows[row]) {
                 updatedRows[row] = this.state.field[row].slice();
             }

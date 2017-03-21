@@ -4,14 +4,13 @@ const jwt = require('jsonwebtoken'),
     uuid = require('node-uuid');
 
 // TODO: dependency injection
-const { createField, revealCellAt } = require('../logic'),
-    gameStorage = require('./games-storage'),
+const { createField, revealCellAt, serializeCellUpdate } = require('../logic'),
+    inMemoryGameStorage = require('./game-storage'),
     serverConfig = require('../server-config');
 
-function serializeCellUpdate(row, col, value) {
-    return (row << 11) | (col << 4) | value;
-}
-
+/**
+ * Represents a game sessions. Accepts a socket and games db services.
+ */
 class GameSession {
     static from(socket, gamesService) {
         return new GameSession(socket, gamesService);
@@ -21,7 +20,7 @@ class GameSession {
         this.spectators = [];
         this.socket = socket;
         this.gamesService = gamesService;
-        console.log(socket.request._query);
+
         const { token } = socket.request._query;
 
         let anonymous = !token;
@@ -42,11 +41,15 @@ class GameSession {
             this.socket.on('load', this.loadGame.bind(this));
         }
 
-        this.socket.on('move', this.move.bind(this));
+        this.socket.on('move', this.onClientGameMove.bind(this));
         this.socket.on('initGame', this.initGame.bind(this));
         this.gameId = uuid.v1();
     }
 
+    /**
+     * Creates a new game based on request parameters.
+     * The created field is stored via in-memory storage.
+     */
     initGame(request) {
         const {
             fieldSize,
@@ -55,44 +58,59 @@ class GameSession {
         } = request,
             field = createField(fieldSize, minesCount);
 
-        gameStorage.storeGame(this.userSession.id, this.gameId, field, { spectatable, minesCount });
+        inMemoryGameStorage.storeGame(this.userSession.id, this.gameId, field, { spectatable, minesCount });
         this.socket.emit('initGame:success');
     }
 
-    move({ row, col }) {
-        const game = gameStorage.getGame(this.userSession.id),
-            updates = [];
+    /**
+     * Execute a move on the game associated with the gaming session.
+     * The revealed cells are stored as update objects in the form of { row, col, value },
+     * compressed and sent to the client.
+     */
+    onClientGameMove({ row, col }) {
+        const gameToUpdate = inMemoryGameStorage.getGameByUserId(this.userSession.id),
+            gameUpdates = [];
 
-        revealCellAt(row, col, game.field, (coordinates, newValue) => {
-            updates.push(serializeCellUpdate(coordinates.row, coordinates.col, newValue));
-        });
+        revealCellAt(row, col, gameToUpdate.field, (coordinates, newValue) =>
+            gameUpdates.push(serializeCellUpdate(coordinates.row, coordinates.col, newValue)));
 
-        gameStorage.update(this.userSession.id, updates);
-        this.socket.emit('updates', updates);
-        this.spectators.forEach(spec => spec.socket.emit('updates', updates));
+        inMemoryGameStorage.update(this.userSession.id, gameUpdates);
+        this.socket.emit('updates', gameUpdates);
+        this.spectators.forEach(spec => spec.socket.emit('updates', gameUpdates));
 
-        if (game.details.minesLeft <= 0) {
+        if (gameToUpdate.details.minesLeft <= 0) {
             this.socket.emit('win');
+            this.spectators.forEach(spec => spec.socket.emit('win'));
         }
     }
 
+    // TODO: propagate errors to client in a meaningful way
+    
+    /**
+     * Saves a game to persistent storage so it can be loaded later.
+     * Depends on games service. Emits events to the sockets on success or failure.
+     */
     saveGame() {
-        console.log('aaaa are we');
-        this.gamesService.save(gameStorage.getGame(this.userSession.id), this.userSession.id)
+        this.gamesService.save(inMemoryGameStorage.getGame(this.userSession.id), this.userSession.id)
             .then(() => this.socket.emit('save:success'))
-            .catch(console.log);
+            .catch(() => this.socket.emit('save:failure'));
     }
 
+    /**
+     * Load a game from either in-memory or the persistent storage, preferring the in-memory storage.
+     * The loaded game is emitted to the client.
+     * The loading is done via user id.
+     */
     loadGame() {
         const userId = this.userSession.id,
-            game = gameStorage.getGame(userId);
+            gameToLoad = inMemoryGameStorage.getGame(userId);
 
-        if (game) {
-            this.socket.emit('updates', game.updates);
+        if (gameToLoad) {
+            this.socket.emit('updates', gameToLoad.updates);
         } else {
             this.gamesService.recoverLast(userId)
                 .then(([game]) => {
-                    gameStorage.storeGame(userId, game.field, game.details);
+                    inMemoryGameStorage.storeGame(userId, game.field, game.details);
                     const { updates, details } = game;
 
                     this.socket.emit('load:success', { size: (game.field.length + 1) / 2 });

@@ -37,6 +37,7 @@ webpack-dev-server --port 8081
     - socket.io
     - crypto.js
     - jsonwebtoken
+    - node-uuid
 
 - Development
     - Stylus

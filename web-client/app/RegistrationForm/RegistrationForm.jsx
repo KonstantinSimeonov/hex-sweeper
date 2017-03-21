@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { post } from '../utils/json-requester.js';
+import { post as httpPost } from '../utils/json-requester.js';
 
 import TextInput from '../TextInput/TextInput.jsx';
 import styles from './registration-form.styl';
@@ -25,9 +25,9 @@ export default class RegistrationForm extends Component {
     submit() {
         const { username, password } = this.state;
 
-        post('http://localhost:6969/api/users', { user: { username, password } })
+        httpPost('http://localhost:6969/api/users', { user: { username, password } })
             .then(success => {
-                this.props.history.push('/');
+                this.props.history.goBack();
                 this.props.history.push('/login');
             })
             .catch(console.log);

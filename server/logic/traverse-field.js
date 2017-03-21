@@ -11,6 +11,10 @@ const dirs = [
 
 let options;
 
+function serializeCellUpdate(row, col, value) {
+    return (row << 11) | (col << 4) | value;
+}
+
 function isInsideSquare(row, col, squareSize) {
     return (0 <= row && row < squareSize) && (0 <= col && col < squareSize);
 }
@@ -58,6 +62,7 @@ module.exports = opts => {
         isInsideSquare,
         neighbors,
         countAdjMines,
-        revealCellAt
+        revealCellAt,
+        serializeCellUpdate
     };
 };

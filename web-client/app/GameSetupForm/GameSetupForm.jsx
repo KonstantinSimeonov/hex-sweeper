@@ -26,7 +26,7 @@ export default class GameSetupForm extends Component {
     }
 
     onSelectDifficulty(difficulty) {
-        this.setState({ 
+        this.setState({
             selected: difficulty.name,
             minesCount: this.state.fieldSize * difficulty.minesPercentage | 0
         });
@@ -52,19 +52,21 @@ export default class GameSetupForm extends Component {
                         patternErrorMessage="Field size must be between 2 and 100"
                         onChange={this.onNamedInputChange.bind(this)} />
                 </div>
-                <h3>Choose a difficulty</h3>
-                <ul className={styles.difficulties}>
-                    {
-                        this.state.difficulties.map(difficulty => {
-                            const isSelected = difficulty.name === this.state.selected;
-                            return (<li
-                                key={difficulty.name}
-                                className={`bottom-border-animated ${isSelected ? styles.selected : ''}`}
-                                onClick={this.onSelectDifficulty.bind(this, difficulty)}>
-                                {difficulty.name}</li>);
-                        })
-                    }
-                </ul>
+                <div>
+                    <h3>Choose a difficulty</h3>
+                    <ul className={styles.difficulties}>
+                        {
+                            this.state.difficulties.map(difficulty => {
+                                const isSelected = difficulty.name === this.state.selected;
+                                return (<li
+                                    key={difficulty.name}
+                                    className={`bottom-border-animated ${isSelected ? styles.selected : ''}`}
+                                    onClick={this.onSelectDifficulty.bind(this, difficulty)}>
+                                    {difficulty.name}</li>);
+                            })
+                        }
+                    </ul>
+                </div>
                 <div className={styles.inputGroup + ' ' + (this.state.selected === 'custom' ? '' : 'hidden')}>
                     <h3>Choose mines count</h3>
                     <TextInput
@@ -74,11 +76,11 @@ export default class GameSetupForm extends Component {
                         patternErrorMessage="Mines count should be more than 0"
                         onChange={this.onNamedInputChange.bind(this)} />
                 </div>
-                <div className={styles.inputGroup + ' ' + styles.play}>
-                    <div className={styles.hexagon + ' ' + styles.playBtn} onClick={this.onSubmit.bind(this)}>
-                        Play
+            </div>
+            <div className={styles.inputGroup + ' ' + styles.play}>
+                <div className={styles.hexagon + ' ' + styles.playBtn} onClick={this.onSubmit.bind(this)}>
+                    Play
                     </div>
-                </div>
             </div>
         </div>);
     }

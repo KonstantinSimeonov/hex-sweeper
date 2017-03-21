@@ -1,30 +1,29 @@
 'use strict';
 
 const GameSession = require('./sockets/game-session'),
-    SpectateSession = require('./sockets/spectate-session'),
-    gameStorage = require('./sockets/games-storage');
+    SpectateSession = require('./sockets/spectate-session');
 
-const gamingSessions = {},
-    spectatingSessions = {};
+const gameSessionStorage = Object.create(null);
 
 module.exports = function (server, { serverConfig, dataServices: { gamesService } }) {
     const io = require('socket.io')(server, { transports: ['websocket'] });
+
     io.on('connection', socket => {
-        console.log('je suis konektive');
-        const isSpectate = socket.request._query.type === 'spectate';
-        if (isSpectate) {
+        console.log(`Connection: ${socket.request._query.type}`);
+
+        const isSpectateSessions = socket.request._query.type === 'spectate';
+
+        if (isSpectateSessions) {
             const { id } = socket.request._query,
-                sessionToSpectate = gamingSessions[id];
+                gameSessionToSpectate = gameSessionStorage[id],
+                spectateSession = SpectateSession.from(socket, gameSessionToSpectate);
 
-            const spectateSession = SpectateSession.from(socket, sessionToSpectate);
-
-            sessionToSpectate.spectators.push(spectateSession);
-
-            // TODO: clean up spectator sessions here
+            gameSessionToSpectate.spectators.push(spectateSession);
         } else {
-            const gameSession = GameSession.from(socket, gamesService);
-            gamingSessions[gameSession.gameId] = gameSession;
-            socket.on('disconnect', () => { delete gamingSessions[gameSession.userSession.id]; })
+            const newGameSessions = GameSession.from(socket, gamesService);
+
+            gameSessionStorage[newGameSessions.gameId] = newGameSessions;
+            socket.on('disconnect', () => { delete gameSessionStorage[newGameSessions.userSession.id]; })
         }
     });
 };

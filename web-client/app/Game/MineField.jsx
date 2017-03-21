@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import cssStyles from './mine-field.styl';
 import Cell from './Cell.jsx';
