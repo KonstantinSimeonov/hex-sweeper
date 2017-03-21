@@ -14,7 +14,6 @@ module.exports = ({ dataServices: { usersService }, serverConfig }) => ({
                 return res.send(400, { success: false, message: 'Authentication failed' });
             }
 
-
             req.session = session;
             next();
         });

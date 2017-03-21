@@ -1,38 +1,30 @@
 'use strict';
 
-const uuid = require('fs')
+const GameSession = require('./sockets/game-session'),
+    SpectateSession = require('./sockets/spectate-session');
 
-const { createField, revealCellAt } = require('./logic');
+const gamingSessions = {},
+    spectatingSessions = {};
 
-const STORAGE = Object.create(null);
+module.exports = function (server, serverConfig) {
+    const io = require('socket.io')(server, { transports: ['websocket'] });
 
-STORAGE.games = {};
+    io.on('connection', socket => {
+        console.log('je suis konektive');
+        const isSpectate = socket.request._query.type === 'spectate';
+        
+        if(isSpectate) {
+            const { playingUserId } = socket.request._query,
+                sessionToSpectate = gamingSessions[playingUserId];
 
-module.exports = function (server) {
-    const io = require('socket.io')(server);
+            const spectateSession = SpectateSession.from(socket, sessionToSpectate);
 
-    io.on('connection', (socket) => {
-        console.log('connected');
-        const { fieldSize: size, minesCount: mines } = socket.request._query;
-        console.log(socket.request._query);
-        const field = createField(+size, +mines);
+            // TODO: clean up spectator sessions here
+        } else {
+            const gameSession = GameSession.from(socket);
 
-        socket.emit('fieldReady', field);
-
-        socket.on('move', data => {
-            console.log('move');
-            const { row, col } = data;
-
-            if(field[row][col] === -1) {
-                socket.emit('gameover');
-                return;
-            }
-
-            const updates = [];
-
-            revealCellAt(row, col, field, ({ row: r, col: c }, value) => updates.push({ row: r, col: c, value }));
-            console.log(updates);
-            socket.emit('fieldUpdate', updates);
-        });
+            gamingSessions[gameSession.userSession.id] = gameSession;
+            socket.on('disconnect', () => { delete gamingSessions[gameSession.userSession.id]; })
+        }
     });
-}
+};

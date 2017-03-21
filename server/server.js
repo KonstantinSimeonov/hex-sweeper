@@ -4,8 +4,10 @@ const express = require('express'),
     bodyParser = require('body-parser');
 
 const server = express(),
-    socketServer = require('http').createServer(server);
-require('./sockets')(socketServer);
+    socketServer = require('http').createServer(server),
+    serverConfig = require('./server-config');
+
+require('./sockets')(socketServer, serverConfig);
 
 function cors(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
@@ -21,8 +23,7 @@ server
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }));
 
-const serverConfig = require('./server-config'),
-    dbConnect = require('./data/connect')(serverConfig.dbUri);
+const dbConnect = require('./data/connect')(serverConfig.dbUri);
 
 const serverPromise = dbConnect
     .then(db => {
@@ -35,7 +36,6 @@ const serverPromise = dbConnect
             controllers = require('./controllers')({ dataServices, serverConfig }),
             middlewares = { authMiddleware: require('./middlewares/auth-middleware')({ dataServices, serverConfig }) };
 
-        
         require('./routing')({ server, controllers, middlewares });
     });
 

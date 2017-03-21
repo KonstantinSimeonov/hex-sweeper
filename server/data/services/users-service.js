@@ -1,5 +1,7 @@
 'use strict';
 
+const mongodb = require('mongodb');
+
 const { hashing } = require('../../utils');
 
 const serviceFunctions = ({ users }) => ({
@@ -30,8 +32,8 @@ const serviceFunctions = ({ users }) => ({
         });
 
     },
-    findById(_id) {
-        return users.findOne({ _id });
+    findById(id) {
+        return users.findOne({ _id: mongodb.ObjectID(id) });
     },
     findByUsername(username) {
         return users.findOne({ username });

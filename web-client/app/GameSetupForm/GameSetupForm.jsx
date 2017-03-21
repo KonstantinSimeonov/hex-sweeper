@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 
 import TextInput from '../TextInput/TextInput.jsx';
 
-import { get as httpGet } from '../utils/json-requester.js';
-
 import styles from './game-setup-form.styl';
 
 export default class GameSetupForm extends Component {
@@ -13,20 +11,25 @@ export default class GameSetupForm extends Component {
         super(props);
 
         this.state = {
-            difficulties: [],
+            difficulties: [
+                { name: 'low', minesPercentage: 0.2 },
+                { name: 'medium', minesPercentage: 0.4 },
+                { name: 'high', minesPercentage: 0.6 },
+                { name: 'very high', minesPercentage: 0.75 },
+                { name: 'custom' },
+            ],
             selected: '',
             fieldSize: null,
             minesCount: null,
             spectatable: true
         };
-
-        httpGet('http://localhost:6969/api/difficulties')
-            .then(({ difficulties }) => this.setState({ difficulties: difficulties.concat(['custom']) }))
-            .catch(console.log);
     }
 
     onSelectDifficulty(difficulty) {
-        this.setState({ selected: difficulty });
+        this.setState({ 
+            selected: difficulty.name,
+            minesCount: this.state.fieldSize * difficulty.minesPercentage | 0
+        });
     }
 
     onNamedInputChange(event) {
@@ -34,13 +37,9 @@ export default class GameSetupForm extends Component {
     }
 
     onSubmit() {
-        if(this.state.selected && this.state.selected !== 'custom') {
-            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&difficulty=${this.state.selected}&spectatable=${this.state.spectatable}`);
-        } else {
-            this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&minesCount=${this.state.minesCount}&spectatable=${this.state.spectatable}`);
-        }
+        this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&minesCount=${this.state.minesCount}&spectatable=${this.state.spectatable}`);
     }
-    
+
     render() {
         return (<div className={styles.gameSetupForm}>
             <div className={styles.difficultiesContainer}>
@@ -51,18 +50,18 @@ export default class GameSetupForm extends Component {
                         placeholder="Field size"
                         pattern={/^\d{1,3}$/}
                         patternErrorMessage="Field size must be between 2 and 100"
-                        onChange={this.onNamedInputChange.bind(this)}/>
+                        onChange={this.onNamedInputChange.bind(this)} />
                 </div>
                 <h3>Choose a difficulty</h3>
                 <ul className={styles.difficulties}>
                     {
-                        this.state.difficulties.map(difficultyName => {
-                            const isSelected = difficultyName === this.state.selected;
+                        this.state.difficulties.map(difficulty => {
+                            const isSelected = difficulty.name === this.state.selected;
                             return (<li
-                                key={difficultyName}
+                                key={difficulty.name}
                                 className={`bottom-border-animated ${isSelected ? styles.selected : ''}`}
-                                onClick={this.onSelectDifficulty.bind(this, difficultyName)}>
-                                {difficultyName}</li>);
+                                onClick={this.onSelectDifficulty.bind(this, difficulty)}>
+                                {difficulty.name}</li>);
                         })
                     }
                 </ul>
@@ -73,7 +72,7 @@ export default class GameSetupForm extends Component {
                         placeholder="Mines count"
                         pattern={/^\d{1,3}$/}
                         patternErrorMessage="Mines count should be more than 0"
-                        onChange={this.onNamedInputChange.bind(this)}/>
+                        onChange={this.onNamedInputChange.bind(this)} />
                 </div>
                 <div className={styles.inputGroup + ' ' + styles.play}>
                     <div className={styles.hexagon + ' ' + styles.playBtn} onClick={this.onSubmit.bind(this)}>

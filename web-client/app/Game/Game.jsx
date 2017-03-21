@@ -16,21 +16,58 @@ export default class Game extends Component {
         super(props);
 
         const urlQuery = new URLSearchParams(props.location.search),
-            size = urlQuery.get('fieldSize');
-
-        const field = generateField({
-            getCell() { return 0; },
-            getNullCell() { return null; }
-        }, +size);
+            fieldSize = +urlQuery.get('fieldSize'),
+            minesCount = +urlQuery.get('minesCount'),
+            spectatable = urlQuery.get('spectatable'),
+            field = generateField({
+                getCell() { return 0; },
+                getNullCell() { return null; }
+            }, fieldSize);
 
         this.state = { field };
 
-        // const socket = io.connect('http://localhost:6969', { query: props.location.search.substr(1) });
+        const socket = this.socket = io('http://localhost:6969', { transports: ['websocket'] }),
+            token = localStorage.getItem('token');
+
+        socket.on('updates', this.onUpdates.bind(this));
+        socket.emit('initGame', { fieldSize, minesCount, spectatable, token });
+    }
+
+    componentWillUnmount() {
+        this.socket.disconnect();
+    }
+
+    onPlayerMove(row, col) {
+        this.socket.emit('move', { row, col });
+    }
+
+    onCellMarker(row, col) {
+        this.socket.emit('mark', { row, col });
+    }
+
+    onUpdates(updates) {
+        const updatedRows = [];
+
+        for (const { row, col, value } of updates) {
+            if (!updatedRows[row]) {
+                updatedRows[row] = this.state.field[row].slice();
+            }
+
+            updatedRows[row][col] = value;
+        }
+
+        for (let i = 0, length = this.state.field.length; i < length; i += 1) {
+            if (!updatedRows[i]) {
+                updatedRows[i] = this.state.field[i];
+            }
+        }
+
+        this.setState({ field: updatedRows });
     }
 
     render() {
         return (<div className={styles.gameContainer}>
-            { this.state.field ? <MineField field={this.state.field} /> : '' }
+            <MineField field={this.state.field} onCellClick={this.onPlayerMove.bind(this)} />
         </div>);
     }
 }
