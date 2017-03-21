@@ -7,12 +7,12 @@ const { hashing } = require('../../utils');
 const serviceFunctions = ({ games }) => ({
     name: 'gamesService',
     save(game, userId) {
-        console.log(game);
         return games.insert({
             field: game.field,
             updates: game.updates,
             details: game.details,
-            userId: userId
+            userId: userId,
+            tmpId: game.gameId
         })
         .then(({ ops }) => ops[0])
         .then(console.log);

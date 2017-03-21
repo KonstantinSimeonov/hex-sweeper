@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 import TextInput from '../TextInput/TextInput.jsx';
+import countCellsInHexagon from '../../../shared/count-cells.js';
 
 import styles from './game-setup-form.styl';
 
@@ -21,14 +22,16 @@ export default class GameSetupForm extends Component {
             selected: '',
             fieldSize: null,
             minesCount: null,
-            spectatable: true
+            spectatable: true,
+            load: false
         };
     }
 
     onSelectDifficulty(difficulty) {
+        // TODO: fix possible buggy state
         this.setState({
             selected: difficulty.name,
-            minesCount: this.state.fieldSize * difficulty.minesPercentage | 0
+            minesCount: countCellsInHexagon(this.state.fieldSize) * difficulty.minesPercentage | 0
         });
     }
 
@@ -37,7 +40,10 @@ export default class GameSetupForm extends Component {
     }
 
     onSubmit() {
-        this.props.history.push(`/play?fieldSize=${this.state.fieldSize}&minesCount=${this.state.minesCount}&spectatable=${this.state.spectatable}`);
+        const state = this.state,
+            url = `/play?fieldSize=${state.fieldSize}&minesCount=${state.minesCount}&spectatable=${state.spectatable}&load=${state.load}`;
+
+        this.props.history.push(url);
     }
 
     render() {
@@ -80,6 +86,11 @@ export default class GameSetupForm extends Component {
             <div className={styles.inputGroup + ' ' + styles.play}>
                 <div className={styles.hexagon + ' ' + styles.playBtn} onClick={this.onSubmit.bind(this)}>
                     Play
+                    </div>
+            </div>
+            <div className={styles.inputGroup + ' ' + styles.load}>
+                <div className={styles.hexagon + ' ' + styles.playBtn} onClick={() => { this.setState({ load: true }); setImmediate(this.onSubmit.bind(this)); }}>
+                    Load
                     </div>
             </div>
         </div>);

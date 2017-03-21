@@ -4,3 +4,21 @@
     border: 2px solid #333333
     display: block
     overflow: auto
+
+    .saveBtn
+        float: right
+        transition: 1s background-color
+
+        &.success
+            background-color: green
+
+            &::before
+                display: inline-block
+                content: '✔'
+
+        &.failure
+            background-color: #C00C0E
+
+            &::before
+                display: inline-block
+                content: 'x'

@@ -23,12 +23,13 @@ export default class Game extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { field: [] };
+        this.state = { field: [], saveBtnClass: '' };
     }
 
     connect(options = {}) {
         const token = localStorage.getItem('token');
         options.token = token;
+
         this.socket = io('http://localhost:6969', { transports: ['websocket'], query: options });
         this.socket.on('updates', this.onUpdates.bind(this));
         this.socket.on('win', () => console.log('i wonz'));
@@ -67,7 +68,7 @@ export default class Game extends Component {
         return (<div className={styles.gameContainer}>
             <div>
                 <Timer />
-                {localStorage.getItem('token') ? <a className="custom-btn" onClick={this.onSaveClick.bind(this)}>Save</a> : ''}
+                {localStorage.getItem('token') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick.bind(this)}>Save</a> : ''}
             </div>
             <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : ''} />
         </div>);

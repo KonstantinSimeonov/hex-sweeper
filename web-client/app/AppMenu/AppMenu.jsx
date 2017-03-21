@@ -40,6 +40,8 @@ export default class AppMenu extends Component {
         localStorage.removeItem('username');
 
         this.setState({ buttons: buttons.concat(buttonsWhenAnonymous), username: '' });
+
+        this.props.history.push('/login');
     }
 
     render() {

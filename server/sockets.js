@@ -9,7 +9,7 @@ module.exports = function (server, { serverConfig, dataServices: { gamesService 
     const io = require('socket.io')(server, { transports: ['websocket'] });
 
     io.on('connection', socket => {
-        console.log(`Connection: ${socket.request._query.type}`);
+        console.log(`Connection: ${socket.request._query.token}`);
 
         const isSpectateSessions = socket.request._query.type === 'spectate';
 

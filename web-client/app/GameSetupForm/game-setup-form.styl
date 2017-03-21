@@ -5,21 +5,29 @@
     padding: 2em
     border: 2px solid #333333
     color: lightgray
-    width: 90%
-    height: 20em
-
-    .difficultiesContainer
+    min-width: 95%
+    min-height: 25em
+    display: flex
 
     .inputGroup
         width: 50%
 
-    .inputGroup.play
-        position: absolute
-        height: 100%
-        top: 0
-        right: 0
-        width: 25%
-        padding: 5em 10em 0 0
+        &.play, &.load
+            position: relative
+            height: 100%
+            top: 0
+            right: 0
+            width: 15%
+            padding: 5em 10em 0 0
+            
+
+        &.play
+            left: 10%
+            top: -2%
+
+        &.load
+            left: -8%
+            top: 10%
 
     .playBtn
         cursor: pointer

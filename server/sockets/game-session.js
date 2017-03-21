@@ -22,7 +22,7 @@ class GameSession {
         this.gamesService = gamesService;
 
         const { token } = socket.request._query;
-
+        console.log(socket.request._query);
         let anonymous = !token;
 
         if (token) {
@@ -91,8 +91,8 @@ class GameSession {
      * Depends on games service. Emits events to the sockets on success or failure.
      */
     saveGame() {
-        this.gamesService.save(inMemoryGameStorage.getGame(this.userSession.id), this.userSession.id)
-            .then(() => this.socket.emit('save:success'))
+        this.gamesService.save(inMemoryGameStorage.getGameByUserId(this.userSession.id), this.userSession.id)
+            .then(() => console.log('saved') || this.socket.emit('save:success'))
             .catch(() => this.socket.emit('save:failure'));
     }
 
@@ -103,20 +103,22 @@ class GameSession {
      */
     loadGame() {
         const userId = this.userSession.id,
-            gameToLoad = inMemoryGameStorage.getGame(userId);
-
+            gameToLoad = inMemoryGameStorage.getGameByUserId(userId);
+            console.log(gameToLoad);
         if (gameToLoad) {
-            this.socket.emit('updates', gameToLoad.updates);
+            const { updates, details } = gameToLoad; 
+            this.socket.emit('load:success', { size: (gameToLoad.field.length + 1) / 2 });
+            this.socket.emit('updates', updates);
         } else {
             this.gamesService.recoverLast(userId)
                 .then(([game]) => {
-                    inMemoryGameStorage.storeGame(userId, game.field, game.details);
+                    inMemoryGameStorage.storeGame(userId, game.field, game.tmpId, game.details);
                     const { updates, details } = game;
-
+                    
                     this.socket.emit('load:success', { size: (game.field.length + 1) / 2 });
-                    this.socket.emit('updates', { updates, details });
+                    this.socket.emit('updates', updates);
                 })
-                .catch(() => this.socket.emit('load:failure'));
+                .catch(err => console.log(err) || this.socket.emit('load:failure'));
         }
     }
 }

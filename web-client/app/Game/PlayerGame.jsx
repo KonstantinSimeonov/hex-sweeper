@@ -7,6 +7,8 @@ import generateField from '../../../shared/generate-field.js';
 import Game from './Game.jsx';
 import MineField from './MineField.jsx';
 
+import styles from './game.styl';
+
 export default class PlayerGame extends Game {
     constructor(props) {
         const urlQuery = new URLSearchParams(props.location.search),
@@ -14,7 +16,7 @@ export default class PlayerGame extends Game {
             minesCount = +urlQuery.get('minesCount'),
             spectatable = urlQuery.get('spectatable'),
             load = urlQuery.get('load') === 'true';
-
+        
         super(props);
         this.connect();
 
@@ -26,17 +28,23 @@ export default class PlayerGame extends Game {
                 const field = generateField(fieldGenOptions, size);
                 this.setState({ field });
             });
+            this.socket.on('load:failure', () => console.log('wawa'));
             this.socket.emit('load');
         } else {
-            console.log('init');
             this.socket.on('initGame:success', () => {
-                console.log('zdr');
                 const field = generateField(fieldGenOptions, fieldSize);
 
                 this.setState({ field });
             });
             this.socket.emit('initGame', { minesCount, fieldSize, spectatable });
         }
+
+        this.socket.on('save:success', () => {
+                console.log('aaa');
+            this.setState({ saveBtnClass: styles.success });
+
+            setTimeout(() => this.setState({ saveBtnClass: '' }), 2000);
+        });
     }
 
     onPlayerMove(row, col) {
