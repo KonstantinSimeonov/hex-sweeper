@@ -31,12 +31,19 @@ export default class Game extends Component {
         options.token = token;
 
         this.socket = io('http://localhost:6969', { transports: ['websocket'], query: options });
-        this.socket.on('updates', this.onUpdates.bind(this));
-        this.socket.on('win', () => console.log('i wonz'));
+        this.socket
+            .on('idAssigned', token => localStorage.setItem('token', token))
+            .on('updates', this.onUpdates.bind(this))
+            .on('win', this.onWin.bind(this))
+            .on('gameover', () => alert('lun'));
     }
 
     componentWillUnmount() {
         this.socket.disconnect();
+    }
+
+    onWin() {
+        alert('win');
     }
 
     /**

@@ -1,3 +1,5 @@
+@import "../styles/global.styl"
+
 :local .gameSetupForm
     position: relative
     background-color: rgba(0, 0, 0, 0.75)
@@ -33,41 +35,6 @@
         cursor: pointer
         font-size: 20px
 
-    .hexagon
-        width: 10em;
-        padding-top: 1.5em
-        height: 4em;
-        background: lighten(#530D88, 15);
-        position: relative;
-        text-align: center
-        transition: 1s opacity
-        opacity: 0.5
-
-        &:hover
-            opacity: 0.9
-
-    .hexagon:before
-        content: "";
-        position: absolute;
-        top: -2.5em;
-        left: 0;
-        width: 0;
-        height: 0;
-        border-left: 5em solid transparent;
-        border-right: 5em solid transparent;
-        border-bottom: 2.5em solid lighten(#530D88, 15);
-
-    .hexagon:after
-        content: "";
-        position: absolute;
-        bottom: -2.5em;
-        left: 0;
-        width: 0;
-        height: 0;
-        border-left: 5em solid transparent;
-        border-right: 5em solid transparent;
-        border-top: 2.5em solid lighten(#530D88, 15);
-
     .difficulties li
         display: inline-block
         color: lightgray
@@ -84,4 +51,5 @@
         &.selected::after
             background-color: lighten(#530D88, 15)
 
+    createHexagon('.hexagon', 10, #530D88)
             

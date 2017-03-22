@@ -22,7 +22,6 @@ export default class PlayerGame extends Game {
 
         const fieldGenOptions = { getCell() { return 0; }, getNullCell() { return null; } };
 
-
         if (load) {
             this.socket.on('load:success', ({ size }) => {
                 const field = generateField(fieldGenOptions, size);
@@ -40,7 +39,6 @@ export default class PlayerGame extends Game {
         }
 
         this.socket.on('save:success', () => {
-                console.log('aaa');
             this.setState({ saveBtnClass: styles.success });
 
             setTimeout(() => this.setState({ saveBtnClass: '' }), 2000);

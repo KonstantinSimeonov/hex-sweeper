@@ -1,17 +1,13 @@
+@import "../styles/global.styl"
+
 :local .cell
-    display: inline-block
-    background-image: url('../assets/hexagon.png')
-    z-index: 1000000
-    background-size: cover
-    height: 55px
-    width: 50px
+    createHexagon('&', 3, white) 
     text-align: center
     margin-right: 0.5em
 
     .text
         display: inline-block
         text-align: center
-        padding: 1em 0
 
     &.one
         color: green
@@ -21,3 +17,4 @@
 
     &.cut, &.empty
         visibility: hidden
+

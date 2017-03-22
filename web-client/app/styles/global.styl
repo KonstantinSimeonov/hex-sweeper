@@ -55,3 +55,39 @@ fieldset
 
     &:hover::after, .bottom-border
         width: 100%
+
+createHexagon(selector, size, bgcolor)
+     {selector}
+        width: unit(size, em)
+        padding-top: unit(size / 6.6666, em)
+        height: unit(size / 2.5, em)
+        background: bgcolor
+        position: relative
+        text-align: center
+        transition: 1s opacity
+        opacity: 0.5
+
+        &:hover
+            opacity: 0.9
+
+     {selector}:before
+        content: ""
+        position: absolute
+        top: unit(size / -4, em)
+        left: 0
+        width: 0
+        height: 0
+        border-left: unit(size / 2, em) solid transparent
+        border-right: unit(size / 2, em) solid transparent
+        border-bottom: unit(size / 4, em) solid bgcolor
+
+     {selector}:after
+        content: ""
+        position: absolute
+        bottom: unit(size / -4, em)
+        left: 0
+        width: 0
+        height: 0
+        border-left: unit(size / 2, em) solid transparent
+        border-right: unit(size / 2, em) solid transparent
+        border-top: unit(size / 4, em) solid bgcolor
