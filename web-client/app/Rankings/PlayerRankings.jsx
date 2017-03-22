@@ -1,13 +1,14 @@
 'use strict';
 
 import React, { Component } from 'react';
+import toastr from 'toastr';
 
 import { get as httpGet } from '../utils/json-requester.js';
-
 import RankingsTable from './RankingsTable.jsx';
-import styles from './rankings.styl';
 
-export default class Rankings extends Component {
+import styles from './rankings.styl'; 
+
+export default class PlayerRankings extends Component {
     constructor(props) {
         super(props);
 
@@ -15,9 +16,9 @@ export default class Rankings extends Component {
     }
 
     componentWillMount() {
-        httpGet('http://localhost:6969/api/highscores')
+        httpGet(`http://localhost:6969/api/highscores/${localStorage.getItem('username')}`)
             .then(rankings => this.setState({ rankings }))
-            .catch(console.log);
+            .catch(err => console.log(err));
     }
 
     render() {

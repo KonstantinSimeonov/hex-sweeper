@@ -52,11 +52,12 @@ const inMemoryGameStorage = {
      * Supposed to do garbage collection. Someone should write tests before letting that spin on setInterval thou.
      */
     cleanAllBefore(date) {
-        const nao = new Date(Date.now() - 20 * 1000);
+        const lastUpdateAllowedMargin = new Date(Date.now() - 20 * 1000);
+
         for (const userId in rawStorage.gamesMap) {
             const game = rawStorage.gamesMap[userId];
-            console.log('ZDR GOSHO', game.lastUpdatedOn < nao, game.details.active);
-            if (!game.details.active && game.lastUpdatedOn < nao) {
+            
+            if (!game.details.active && game.lastUpdatedOn < lastUpdateAllowedMargin) {
                 if(game.details.spectatable) {
                     const lastSpectatable = rawStorage.spectatableGames.slice(-1)[0];
 

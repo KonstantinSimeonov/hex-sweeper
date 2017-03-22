@@ -25,7 +25,7 @@ export default class AppMenu extends Component {
         }
 
         window.addEventListener('login', ({ detail: username }) => {
-            const newButtons = buttons.concat([{ text: username, href: username }]);
+            const newButtons = buttons.concat([{ text: username, href: 'my-rankings' }]);
 
             this.setState({ buttons: newButtons, username: localStorage.getItem('username') });
         });

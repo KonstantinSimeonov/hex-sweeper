@@ -18,6 +18,7 @@ import SpectatableGame from './Game/SpectatedGame.jsx';
 import Timer from './Timer/Timer.jsx';
 import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.jsx';
 import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
+import PlayerRankings from './Rankings/PlayerRankings.jsx';
 import Rankings from './Rankings/Rankings.jsx';
 
 import './styles/global.styl';
@@ -35,7 +36,8 @@ export default class App extends Component {
             GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
             SpectateListComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList history={history} />} />,
             SpectateGameComponent = ({ match, history }) => <SpectatableGame match={match} history={history} />,
-            RankingsComponent = ({ }) => <Rankings />;
+            RankingsComponent = ({ }) => <Rankings />,
+            PlayerRankingsComponent = () => <PlayerRankings />;
 
         return (
             <Router history={createBrowserHistory()}>
@@ -51,6 +53,7 @@ export default class App extends Component {
                         <Route path="/spectate1/:id" component={SpectateGameComponent} />
                         <Route path="/highscore" component={HiScoreForm} />
                         <Route path="/rankings" component={Rankings} />
+                        <Route path="/my-rankings" component={PlayerRankingsComponent} />
                     </main>
                 </div>
             </Router>

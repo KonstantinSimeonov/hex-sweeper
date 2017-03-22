@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import toastr from 'toastr';
 
 import { post as httpPost } from '../utils/json-requester.js';
 
@@ -27,10 +28,17 @@ export default class RegistrationForm extends Component {
 
         httpPost('http://localhost:6969/api/users', { user: { username, password } })
             .then(success => {
-                this.props.history.goBack();
-                this.props.history.push('/login');
+                toastr.success('Registration successful!');
+
+                setTimeout(() => {
+                    this.props.history.goBack();
+                    this.props.history.push('/login');
+                }, 2000);
             })
-            .catch(console.log);
+            .catch(error => {
+                toastr.error('Registration failed! Please make sure your username and password are valid and try again.');
+                console.log(error);
+            });
     }
 
     render() {

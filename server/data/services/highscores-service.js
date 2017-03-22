@@ -33,8 +33,9 @@ const serviceFunctions = ({ highscores }) => {
         rankings(count) {
             return highscores.find({}).sort({ ranking: -1 }).limit(count).toArray();
         },
-        rankingsByUserId(userId){
-            return highscores.find({ userId: mongodb.ObjectID(userId) }).sort({ ranking: -1 }).toArray();
+        rankingsByUserName(username){
+            console.log('KAJI NESHTO WE');
+            return highscores.find({ nickname: username }).sort({ ranking: -1 }).toArray();
         }
     };
 };

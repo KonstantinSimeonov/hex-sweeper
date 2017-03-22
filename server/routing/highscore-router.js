@@ -4,5 +4,5 @@ module.exports = (server, { highscoresController },  { authMiddleware }) => {
     server
         .put('/api/highscores', authMiddleware.decodeSession, highscoresController.updateHighscoreNickname)
         .get('/api/highscores', highscoresController.rankings)
-        .get('/api/highscores/:userId', highscoresController.highscoresByUserId);
+        .get('/api/highscores/:username', highscoresController.highscoresByUsername);
 };
