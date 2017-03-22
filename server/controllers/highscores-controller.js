@@ -15,5 +15,11 @@ module.exports = ({ dataServices: { highscoresService }, serverConfig }) => ({
         highscoresService.rankings(5)
             .then(highscores => res.status(200).json(highscores))
             .catch(err => console.log(err) || res.status(500).json(err));
+    },
+    highscoresByUserId(req, res) {
+        highscoresService
+            .rankingsByUserId(req.params.userId)
+            .then(highscores => res.status(200).json(highscores))
+            .catch(err => console.log(err) || res.status(500).json(err));
     }
 });

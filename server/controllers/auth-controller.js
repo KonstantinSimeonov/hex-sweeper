@@ -17,13 +17,12 @@ module.exports = ({ dataServices: { usersService }, serverConfig }) => ({
     },
     login(req, res) {
         const { username, password } = req.body.user;
-
+        
         usersService
             .findByCredentials(username, password)
             .then(user => {
-                console.log('hits promise');
                 if (!user) {
-                    return res.status(200).json({ success: false, message: 'Invalid username or password' });
+                    return res.status(400).json({ success: false, message: 'Invalid username or password' });
                 }
 
                 const payload = { username: user.username, id: user._id },

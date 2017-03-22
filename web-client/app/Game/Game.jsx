@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import toastr from 'toastr';
 import io from '../../node_modules/socket.io-client/dist/socket.io.min.js'
 
 import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
@@ -33,17 +34,11 @@ export default class Game extends Component {
         this.socket = io('http://localhost:6969', { transports: ['websocket'], query: options });
         this.socket
             .on('idAssigned', token => localStorage.setItem('token', token))
-            .on('updates', this.onUpdates.bind(this))
-            .on('win', this.onWin.bind(this))
-            .on('gameover', () => alert('lun'));
+            .on('updates', this.onUpdates.bind(this));
     }
 
     componentWillUnmount() {
         this.socket.disconnect();
-    }
-
-    onWin() {
-        alert('win');
     }
 
     /**
@@ -75,9 +70,9 @@ export default class Game extends Component {
         return (<div className={styles.gameContainer}>
             <div>
                 <Timer />
-                {localStorage.getItem('token') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick.bind(this)}>Save</a> : ''}
+                {localStorage.getItem('username') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick ? this.onSaveClick.bind(this) : ''}>Save</a> : ''}
             </div>
-            <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : ''} />
+            <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : () => {}} />
         </div>);
     }
 }

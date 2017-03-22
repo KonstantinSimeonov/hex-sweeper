@@ -9,7 +9,7 @@ const rawStorage = {
 };
 
 // TODO: do some garbage collection
-module.exports = {
+const inMemoryGameStorage = {
 
    /**
     * Store game objects by user id and game id.
@@ -47,15 +47,16 @@ module.exports = {
         gameToUpdate.details.freeCells -= updates.length;
         gameToUpdate.updates.push(...updates);
         gameToUpdate.lastUpdatedOn = new Date();
-        console.log(gameToUpdate.details.freeCells);
     },
     /**
      * Supposed to do garbage collection. Someone should write tests before letting that spin on setInterval thou.
      */
     cleanAllBefore(date) {
-        for (const userId of rawStorage.gamesMap) {
+        const nao = new Date(Date.now() - 20 * 1000);
+        for (const userId in rawStorage.gamesMap) {
             const game = rawStorage.gamesMap[userId];
-            if (game.lastUpdatedOn < date) {
+            console.log('ZDR GOSHO', game.lastUpdatedOn < nao, game.details.active);
+            if (!game.details.active && game.lastUpdatedOn < nao) {
                 if(game.details.spectatable) {
                     const lastSpectatable = rawStorage.spectatableGames.slice(-1)[0];
 
@@ -72,3 +73,7 @@ module.exports = {
         return rawStorage.spectatableGames;
     }
 };
+
+setInterval(() => inMemoryGameStorage.cleanAllBefore(new Date()), 20 * 1000);
+
+module.exports = inMemoryGameStorage;

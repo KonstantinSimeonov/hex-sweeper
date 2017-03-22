@@ -9,21 +9,17 @@ import styles from './app-menu.styl';
 const buttons = [
     { text: 'Play', href: '/newgame' },
     { text: 'Spectate', href: '/spectate' },
-    { text: 'Ranking', href: '/hall-of-fame' }
+    { text: 'Ranking', href: '/rankings' }
 ],
-    buttonsWhenAnonymous = [
-        { text: 'Log in', href: 'login' }, { text: 'Register', href: 'register' }
-    ];
+    buttonsWhenAnonymous = [{ text: 'Log in', href: 'login' }, { text: 'Register', href: 'register' }];
 
 export default class AppMenu extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            username: localStorage.getItem('username') || ''
-        };
+        this.state = { username: localStorage.getItem('username') || '' };
 
         if (this.state.username) {
-            this.state.buttons = buttons.concat([{ text: this.state.username, href: this.state.username }]);
+            this.state.buttons = buttons.concat([{ text: this.state.username, href: 'my-rankings' }]);
         } else {
             this.state.buttons = buttons.concat(buttonsWhenAnonymous);
         }

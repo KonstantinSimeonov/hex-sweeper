@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import toastr from 'toastr';
 
 import generateField from '../../../shared/generate-field.js';
 
@@ -9,6 +10,7 @@ import MineField from './MineField.jsx';
 
 import styles from './game.styl';
 
+
 export default class PlayerGame extends Game {
     constructor(props) {
         const urlQuery = new URLSearchParams(props.location.search),
@@ -16,7 +18,7 @@ export default class PlayerGame extends Game {
             minesCount = +urlQuery.get('minesCount'),
             spectatable = urlQuery.get('spectatable'),
             load = urlQuery.get('load') === 'true';
-        
+
         super(props);
         this.connect();
 
@@ -38,13 +40,17 @@ export default class PlayerGame extends Game {
             this.socket.emit('initGame', { minesCount, fieldSize, spectatable });
         }
 
-        this.socket.on('save:success', () => {
-            this.setState({ saveBtnClass: styles.success });
+        this.socket.on('save:success', () => toastr.success('Game saved successfully!'));
 
-            setTimeout(() => this.setState({ saveBtnClass: '' }), 2000);
-        });
-
-        this.socket.on('win', () => this.props.history.push('/highscore'));
+        this.socket
+            .on('gameover', () => {
+                toastr.error('Boom. Lost!');
+                setTimeout(() => this.props.history.goBack(), 5000);
+            })
+            .on('win', () => {
+                toastr.success('Victory');
+                setTimeout(() => this.props.history.push('/rankings'), 5000);
+            });
     }
 
     onPlayerMove(row, col) {

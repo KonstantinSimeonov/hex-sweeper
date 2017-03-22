@@ -56,6 +56,39 @@ fieldset
     &:hover::after, .bottom-border
         width: 100%
 
+#toast-container
+    position: fixed
+    max-width: 25%
+    top: 2em
+    right: 2em
+
+    .toast
+        margin: 1em
+        padding: 1em
+        background-color: #333333
+        display: inline-block
+
+        &.toast-success
+            color: #4B9BD4
+            border: 1px solid #4B9BD4
+            
+            .toast-message::before
+                content: '✔'
+        
+        &.toast-error
+            color: #A8181B
+            border: 1px solid #A8181B
+
+            .toast-message::before
+                content: '☹'
+            
+        .toast-message::before
+            margin-right: 1em
+            line-height: 0.7em
+            display: inline
+            font-size: 24px
+
+
 createHexagon(selector, size, bgcolor)
      {selector}
         width: unit(size, em)

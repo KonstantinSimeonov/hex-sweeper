@@ -1,0 +1,52 @@
+:local .rankingsContainer
+    width: 100%
+    display: -webkit-box
+    display: -moz-box
+    display: -ms-flexbox
+    display: -webkit-flex
+    display: flex
+    align-content: center
+    align-items: center
+    justify-content: center
+
+    table
+        padding: 5em
+        width: 78%
+        text-align: left
+        border-collapse: collapse
+        background-color: rgba(0, 0, 0, 0)
+
+        thead
+            color: lightblue
+            font-weight: bold
+            font-size: 20px
+
+        tr
+            margin: 1em
+
+        tbody tr
+            background-color: #333333
+            opacity: 0.5
+            color: lightgray
+            &:nth-child(2n)
+                background-color: lighten(#333333, 15)
+
+            &:nth-child(1), &:nth-child(2), &:nth-child(3)
+                opacity: 0.9
+
+            &:nth-child(1)
+                color: #BDA50B
+
+            &:nth-child(2)
+                color: lighten(#5C0D95, 30)
+
+            &:nth-child(3)
+                color: #0DBD0E
+
+            &:hover
+                opacity: 1
+
+            td
+                padding: 0.5em
+                border-bottom: 1px solid gray
+                margin: 0

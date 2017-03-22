@@ -44,6 +44,7 @@ class GameSession {
 
         this.socket.on('move', this.onClientGameMove.bind(this));
         this.socket.on('initGame', this.initGame.bind(this));
+        this.socket.on('disconnect', () => inMemoryGameStorage.getGameByGameId(this.gameId).details.active = false);
     }
 
     /**
@@ -63,7 +64,8 @@ class GameSession {
                 spectatable,
                 minesCount,
                 fieldSize,
-                freeCells: countCellsInHexagon(fieldSize) - minesCount
+                freeCells: countCellsInHexagon(fieldSize) - minesCount,
+                active: true
             });
         this.socket.emit('initGame:success');
     }

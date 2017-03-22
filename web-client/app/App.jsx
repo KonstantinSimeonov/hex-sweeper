@@ -18,6 +18,7 @@ import SpectatableGame from './Game/SpectatedGame.jsx';
 import Timer from './Timer/Timer.jsx';
 import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.jsx';
 import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
+import Rankings from './Rankings/Rankings.jsx';
 
 import './styles/global.styl';
 
@@ -33,14 +34,15 @@ export default class App extends Component {
             GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
             GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
             SpectateListComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList history={history} />} />,
-            SpectateGameComponent = ({ match }) => <SpectatableGame match={match} />;
+            SpectateGameComponent = ({ match, history }) => <SpectatableGame match={match} history={history} />,
+            RankingsComponent = ({ }) => <Rankings />;
 
         return (
             <Router history={createBrowserHistory()}>
                 <div>
                     <Route path="*" component={AppMenu} />
                     <main className="mainContent">
-                        <Route path="/" component={() => <div></div>} />
+                        {/*<Route path="/" component={() => <div></div>} />*/}
                         <Route path="/register" component={RegForm} />
                         <Route path="/login" component={LogForm} />
                         <Route path="/newgame" component={GameSetup} />
@@ -48,6 +50,7 @@ export default class App extends Component {
                         <Route path="/spectate" component={SpectateListComponent} />
                         <Route path="/spectate1/:id" component={SpectateGameComponent} />
                         <Route path="/highscore" component={HiScoreForm} />
+                        <Route path="/rankings" component={Rankings} />
                     </main>
                 </div>
             </Router>

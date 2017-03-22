@@ -4,7 +4,7 @@ const mongodb = require('mongodb'),
     { countCellsInHexagon } = require('../../logic');
 
 const serviceFunctions = ({ highscores }) => {
-    highscores.ensureIndex({ ranking: 1 });
+    highscores.ensureIndex({ ranking: -1 });
 
     return {
         name: 'highscoresService',
@@ -31,7 +31,10 @@ const serviceFunctions = ({ highscores }) => {
             return highscores.insert(highscoreToCreate);
         },
         rankings(count) {
-            return highscores.find({}).sort({ ranking: 1 }).limit(count).toArray();
+            return highscores.find({}).sort({ ranking: -1 }).limit(count).toArray();
+        },
+        rankingsByUserId(userId){
+            return highscores.find({ userId: mongodb.ObjectID(userId) }).sort({ ranking: -1 }).toArray();
         }
     };
 };
