@@ -10,8 +10,8 @@ class SpectateSession {
     constructor(socket, gameSession) {
         this.socket = socket;
         const { id: gameTmpId } = socket.request._query,
-            gameToSpectate = gameStorage.getGameByTmpId(gameTmpId);
-
+            gameToSpectate = gameStorage.getGameByGameId(gameTmpId);
+            
         if(gameToSpectate) {
             this.socket.emit('spectate:success', { size: (gameToSpectate.field.length + 1) / 2 });
             this.socket.emit('updates', gameToSpectate.updates);

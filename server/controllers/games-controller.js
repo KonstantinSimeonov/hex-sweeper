@@ -4,6 +4,8 @@ const gameStorage = require('../sockets/game-storage');
 
 module.exports = ({ dataServices, serverConfig }) => ({
     getSpectatable(req, res) {
-        res.status(200).json(gameStorage.getSpectatableGames().map(sg => sg.tmpId));
+        const spectatables = gameStorage.getSpectatableGames();
+
+        res.status(200).json(spectatables.map(sg => sg.gameId));
     }
 });

@@ -9,7 +9,7 @@ const fieldFillerOptions = {
     }
 };
 
-const { getFieldFiller } = require('./field-filler'),
+const { getFieldFiller, countCellsInHexagon } = require('./field-filler'),
     getFieldGenerator = require('./generate-field'),
     getTraversalLogic = require('./traverse-field'),
     { revealCellAt, serializeCellUpdate } = getTraversalLogic({ emptyCellToken: 7, mineCellToken: -1 });
@@ -31,5 +31,6 @@ module.exports = {
         return field;
     },
     revealCellAt,
-    serializeCellUpdate
+    serializeCellUpdate,
+    countCellsInHexagon
 }

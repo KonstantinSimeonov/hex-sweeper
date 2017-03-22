@@ -25,9 +25,8 @@ module.exports = {
             updates: [],
         };
 
-        rawStorage.gamesById[gameToStore.tmpId] = gameToStore;
+        rawStorage.gamesById[gameId] = gameToStore;
         rawStorage.gamesMap[userId] = gameToStore;
-        
         if(details.spectatable) {
             rawStorage.spectatableGames.push(gameToStore);
             gameToStore.spectatableIndex = rawStorage.spectatableGames.length - 1;
@@ -45,9 +44,10 @@ module.exports = {
     update(userId, updates) {
         const gameToUpdate = rawStorage.gamesMap[userId];
 
-        gameToUpdate.details.minesLeft -= updates.length;
+        gameToUpdate.details.freeCells -= updates.length;
         gameToUpdate.updates.push(...updates);
         gameToUpdate.lastUpdatedOn = new Date();
+        console.log(gameToUpdate.details.freeCells);
     },
     /**
      * Supposed to do garbage collection. Someone should write tests before letting that spin on setInterval thou.

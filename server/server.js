@@ -10,7 +10,7 @@ const server = express(),
 
 function cors(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
-    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -28,7 +28,8 @@ const serverPromise = dbConnect
     .then(db => {
         const dbCollections = {
             'users': db.collection('users'),
-            'games': db.collection('games')
+            'games': db.collection('games'),
+            'highscores': db.collection('highscores')
         };
 
         const dataServices = require('./data/services')(dbCollections),

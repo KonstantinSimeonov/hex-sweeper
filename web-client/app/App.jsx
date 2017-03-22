@@ -17,6 +17,7 @@ import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
 import SpectatableGame from './Game/SpectatedGame.jsx';
 import Timer from './Timer/Timer.jsx';
 import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.jsx';
+import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
 
 import './styles/global.styl';
 
@@ -28,8 +29,9 @@ export default class App extends Component {
     render() {
         const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
             LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />,
+            HiScoreForm = ({ history }) => <ModalWindow title="How would you like to be known in the rankings?" children={<HighscoreForm history={history} />} history={history}/>,
             GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
-            GameComponent = ({ location }) => <PlayerGame location={location} />,
+            GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
             SpectateListComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList history={history} />} />,
             SpectateGameComponent = ({ match }) => <SpectatableGame match={match} />;
 
@@ -45,6 +47,7 @@ export default class App extends Component {
                         <Route path="/play" component={GameComponent}/>
                         <Route path="/spectate" component={SpectateListComponent} />
                         <Route path="/spectate1/:id" component={SpectateGameComponent} />
+                        <Route path="/highscore" component={HiScoreForm} />
                     </main>
                 </div>
             </Router>

@@ -43,6 +43,8 @@ export default class PlayerGame extends Game {
 
             setTimeout(() => this.setState({ saveBtnClass: '' }), 2000);
         });
+
+        this.socket.on('win', () => this.props.history.push('/highscore'));
     }
 
     onPlayerMove(row, col) {

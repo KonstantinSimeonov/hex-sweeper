@@ -27,3 +27,15 @@ export function post(url, data) {
         });
     });
 }
+
+export function put(url, data) {
+    return new Promise((resolve, reject) => {
+        $.ajax(url, {
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: resolve,
+            error: (...args) => reject(args)
+        });
+    });
+}
