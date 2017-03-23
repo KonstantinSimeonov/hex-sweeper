@@ -8,6 +8,7 @@ import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
 
 import MineField from './MineField.jsx';
 import Timer from '../Timer/Timer.jsx';
+import Loader from '../Loader/Loader.jsx';
 
 import styles from './game.styl';
 
@@ -24,7 +25,7 @@ export default class Game extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { field: [], saveBtnClass: '' };
+        this.state = { field: [], saveBtnClass: '', loading: true, gameStarted: false };
     }
 
     connect(options = {}) {
@@ -46,6 +47,7 @@ export default class Game extends Component {
      * Executed on socket event emitted from the server.
      */
     onUpdates(updates) {
+        console.log(this.state.startDate, this.state.gameStarted);
         const updatedRows = [];
 
         for (const serializedUpdate of updates) {
@@ -67,12 +69,17 @@ export default class Game extends Component {
     }
 
     render() {
-        return (<div className={styles.gameContainer}>
+        return (
             <div>
-                <Timer />
-                {localStorage.getItem('username') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick ? this.onSaveClick.bind(this) : ''}>Save</a> : ''}
+                {this.state.loading ? <Loader /> : ''}
+                <div className={styles.gameContainer + (this.state.loading ? '' : ` ${styles.active}`)}>
+                    <div>
+                        {this.state.gameStarted ? <Timer startDate={this.state.startDate} frozen={!this.state.gameStarted}/> : ''}
+                        {localStorage.getItem('username') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick ? this.onSaveClick.bind(this) : ''}>Save</a> : ''}
+                    </div>
+                    <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : () => { }} />
+                </div>
             </div>
-            <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : () => {}} />
-        </div>);
+        );
     }
 }

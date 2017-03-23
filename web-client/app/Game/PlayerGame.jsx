@@ -22,20 +22,20 @@ export default class PlayerGame extends Game {
         super(props);
         this.connect();
 
-        const fieldGenOptions = { getCell() { return 0; }, getNullCell() { return null; } };
+        const fieldGenOptions = { getCell() { return 0; }, getNullCell() { return null; } },
+            generatedField = generateField(fieldGenOptions, fieldSize);
 
         if (load) {
             this.socket.on('load:success', ({ size }) => {
                 const field = generateField(fieldGenOptions, size);
-                this.setState({ field });
+                setTimeout(() => this.setState({ field, loading: false }), 1000);
             });
             this.socket.on('load:failure', () => console.log('wawa'));
             this.socket.emit('load');
         } else {
             this.socket.on('initGame:success', () => {
-                const field = generateField(fieldGenOptions, fieldSize);
 
-                this.setState({ field });
+                setTimeout(() => this.setState({ field: generatedField, loading: false, startDate: Date.now() }), 1000);
             });
             this.socket.emit('initGame', { minesCount, fieldSize, spectatable });
         }
@@ -51,9 +51,12 @@ export default class PlayerGame extends Game {
                 toastr.success('Victory');
                 setTimeout(() => this.props.history.push('/rankings'), 5000);
             });
+
+        console.log(this.state.gameStarted);
     }
 
     onPlayerMove(row, col) {
+        this.setState({ gameStarted: true, startDate: Date.now() });
         this.socket.emit('move', { row, col });
     }
 

@@ -4,6 +4,11 @@
     border: 2px solid #333333
     display: block
     overflow: auto
+    opacity: 0
+    transition: 1s opacity
+
+    &.active
+        opacity: 1
 
     .saveBtn
         float: right

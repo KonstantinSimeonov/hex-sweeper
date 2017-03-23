@@ -79,7 +79,7 @@ fieldset
 #toast-container
     z-index: 999999999
     position: fixed
-    max-width: 25%
+    max-width: 30%
     top: 2em
     right: 2em
 
@@ -101,6 +101,7 @@ fieldset
             border: 1px solid #A8181B
 
             .toast-message::before
+                font-weight: bolder
                 content: '☹'
 
         &.toast-warning
@@ -108,7 +109,8 @@ fieldset
             border: 1px solid #B69F10
 
             .toast-message::before
-                content: '!'
+                font-weight: bolder
+                content: '⚠'
             
         .toast-message::before
             margin-right: 1em
