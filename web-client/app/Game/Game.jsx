@@ -47,6 +47,7 @@ export default class Game extends Component {
      * Executed on socket event emitted from the server.
      */
     onUpdates(updates) {
+        console.log('CALLLLLED');
         console.log(this.state.startDate, this.state.gameStarted);
         const updatedRows = [];
 

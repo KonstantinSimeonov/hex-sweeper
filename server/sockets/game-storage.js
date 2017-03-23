@@ -25,6 +25,7 @@ const inMemoryGameStorage = {
      * Store game objects by user id and game id.
      */
     storeGame(userId, gameId, field, details) {
+        console.log(field);
         details.minesLeft = details.minesCount;
         const gameToStore = {
             field,
@@ -49,6 +50,16 @@ const inMemoryGameStorage = {
     },
     getGameByGameId(gameId) {
         return rawStorage.gamesByOwnId[gameId];
+    },
+    linkGameToPersintentStorageById(gameId, persistentStorageId) {
+        rawStorage.gamesByOwnId[gameId].persistentStorageId = persistentStorageId;
+    },
+    deactivateGameById(gameId) {
+        const gameToDeactivate = this.getGameByGameId(this.gameId);
+
+        if(gameToDeactivate) {
+            game.details.active = false;
+        }
     },
     /**
      * Push serialized field updates to the storage. Uses user id to find the appropriate game.

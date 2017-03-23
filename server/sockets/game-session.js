@@ -44,7 +44,7 @@ class GameSession {
 
         this.socket.on('move', this.onClientGameMove.bind(this));
         this.socket.on('initGame', this.initGame.bind(this));
-        this.socket.on('disconnect', () => inMemoryGameStorage.getGameByGameId(this.gameId).details.active = false);
+        this.socket.on('disconnect', () => inMemoryGameStorage.deactivateGameById(this.gameId));
     }
 
     /**
@@ -75,9 +75,11 @@ class GameSession {
      * compressed and sent to the client.
      */
     onClientGameMove({ row, col }) {
+        console.log('are we here', row, col);
         const gameToUpdate = inMemoryGameStorage.getGameByUserId(this.userSession.id);
-
+        console.log(gameToUpdate.field);
         if (gameToUpdate.field[row][col] === -1) {
+            console.log('lose');
             this.socket.emit('gameover').disconnect();
             this.spectators.forEach(spec => spec.socket.emit('gameover').disconnect());
             return;
@@ -89,6 +91,7 @@ class GameSession {
             gameUpdates.push(serializeCellUpdate(coordinates.row, coordinates.col, newValue)));
 
         inMemoryGameStorage.update(this.userSession.id, gameUpdates);
+        console.log('updates', gameUpdates);
         this.socket.emit('updates', gameUpdates);
         // console.log(this.spectators);
         this.spectators.forEach(spec => spec.socket.emit('updates', gameUpdates));
@@ -99,6 +102,7 @@ class GameSession {
     }
 
     onWin(wonGame) {
+        console.log('win');
         this.socket.emit('win').disconnect();
         this.spectators.forEach(spec => spec.socket.emit('win').disconnect());
         this.gamesService.save(wonGame, this.userSession.id);
@@ -125,7 +129,7 @@ class GameSession {
     loadGame() {
         const userId = this.userSession.id,
             gameToLoad = inMemoryGameStorage.getGameByUserId(userId);
-        console.log(gameToLoad);
+
         if (gameToLoad) {
             const { updates, details } = gameToLoad;
             this.socket.emit('load:success', { size: (gameToLoad.field.length + 1) / 2 });
@@ -133,11 +137,12 @@ class GameSession {
         } else {
             this.gamesService.recoverLast(userId)
                 .then(([game]) => {
-                    inMemoryGameStorage.storeGame(userId, game.field, game.tmpId, game.details);
+                    inMemoryGameStorage.storeGame(userId, game.tmpId, game.field, game.details);
+                    inMemoryGameStorage.linkGameToPersintentStorageById(game.tmpId, game._id);
                     const { updates, details } = game;
-
                     this.socket.emit('load:success', { size: (game.field.length + 1) / 2 });
                     this.socket.emit('updates', updates);
+                    inMemoryGameStorage.update(userId, updates);
                 })
                 .catch(err => console.log(err) || this.socket.emit('load:failure'));
         }
