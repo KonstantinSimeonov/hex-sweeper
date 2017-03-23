@@ -20,7 +20,9 @@ const serviceFunctions = ({ highscores }) => {
             };
 
             // TODO: ranking calculation logic should defo be changed
-            const ranking = countCellsInHexagon(highscoreToCreate.fieldSize) / highscoreToCreate.minesCount / highscoreToCreate.time;
+            const cellsCount = countCellsInHexagon(highscoreToCreate.fieldSize),
+                minesCount = highscoreToCreate.minesCount,
+                ranking = cellsCount * Math.pow(minesCount / (cellsCount - minesCount), 10) / highscoreToCreate.time;
 
             highscoreToCreate.ranking = ranking;
 
@@ -34,7 +36,6 @@ const serviceFunctions = ({ highscores }) => {
             return highscores.find({}).sort({ ranking: -1 }).limit(count).toArray();
         },
         rankingsByUserName(username){
-            console.log('KAJI NESHTO WE');
             return highscores.find({ nickname: username }).sort({ ranking: -1 }).toArray();
         }
     };

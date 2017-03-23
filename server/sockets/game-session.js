@@ -75,11 +75,8 @@ class GameSession {
      * compressed and sent to the client.
      */
     onClientGameMove({ row, col }) {
-        console.log('are we here', row, col);
         const gameToUpdate = inMemoryGameStorage.getGameByUserId(this.userSession.id);
-        console.log(gameToUpdate.field);
         if (gameToUpdate.field[row][col] === -1) {
-            console.log('lose');
             this.socket.emit('gameover').disconnect();
             this.spectators.forEach(spec => spec.socket.emit('gameover').disconnect());
             return;

@@ -58,8 +58,10 @@ export default class PlayerGame extends Game {
     }
 
     onPlayerMove(row, col) {
-        this.setState({ gameStarted: true, startDate: Date.now() });
-        console.log('ummmm what');
+        if (!this.state.gameStarted) {
+            this.setState({ gameStarted: true, startDate: Date.now() });
+        }
+
         this.socket.emit('move', { row, col });
     }
 
