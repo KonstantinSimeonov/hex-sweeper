@@ -24,40 +24,52 @@ import Loader from './Loader/Loader.jsx';
 
 import './styles/global.styl';
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+export default function App(props) {
+    const RegForm = ({ history }) => (
+        <ModalWindow
+            title="Join, play, top the rankings." history={history}>
+            <RegistrationForm history={history} />
+        </ModalWindow>
+    ),
+        LogForm = ({ history }) => (
+            <ModalWindow
+                title="Here to sweep mines again?" history={history}>
+                <LoginForm history={history} />
+            </ModalWindow>
+        ),
+        HiScoreForm = ({ history }) => (
+            <ModalWindow
+                title="How would you like to be known in the rankings?" history={history}>
+                <HighscoreForm history={history} />
+            </ModalWindow>
+        ),
+        SpectateListComponent = ({ history }) => (
+            <ModalWindow title="Watch other players live" history={history}>
+                <SpectatableGamesList history={history} />
+            </ModalWindow>
+        ),
+        GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
+        GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
+        SpectatableGames = ({ match, history }) => <SpectatableGame match={match} history={history} />,
+        RankingsComponent = () => <Rankings />,
+        PlayerRankingsComponent = () => <PlayerRankings />;
 
-    render() {
-        const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
-            LogForm = ({ history }) => <ModalWindow title="Here to sweep mines again?" history={history} children={<LoginForm history={history} />} />,
-            HiScoreForm = ({ history }) => <ModalWindow title="How would you like to be known in the rankings?" children={<HighscoreForm history={history} />} history={history}/>,
-            GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
-            GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
-            SpectateListComponent = ({ history }) => <ModalWindow title="Watch other players live" history={history} children={<SpectatableGamesList history={history} />} />,
-            SpectateGameComponent = ({ match, history }) => <SpectatableGame match={match} history={history} />,
-            RankingsComponent = ({ }) => <Rankings />,
-            PlayerRankingsComponent = () => <PlayerRankings />;
-
-        return (
-            <Router history={createBrowserHistory()}>
-                <div>
-                    <Route path="*" component={AppMenu} />
-                    <main className="mainContent">
-                        {/*<Route path="/" component={Loader} />*/}
-                        <Route path="/register" component={RegForm} />
-                        <Route path="/login" component={LogForm} />
-                        <Route path="/newgame" component={GameSetup} />
-                        <Route path="/play" component={GameComponent}/>
-                        <Route path="/spectate" component={SpectateListComponent} />
-                        <Route path="/spectate1/:id" component={SpectateGameComponent} />
-                        <Route path="/highscore" component={HiScoreForm} />
-                        <Route path="/rankings" component={Rankings} />
-                        <Route path="/my-rankings" component={PlayerRankingsComponent} />
-                    </main>
-                </div>
-            </Router>
-        );
-    }
+    return (
+        <Router history={createBrowserHistory()}>
+            <div>
+                <Route path="*" component={AppMenu} />
+                <main className="mainContent">
+                    <Route path="/register" component={RegForm} />
+                    <Route path="/login" component={LogForm} />
+                    <Route path="/newgame" component={GameSetup} />
+                    <Route path="/play" component={GameComponent} />
+                    <Route path="/spectatable" component={SpectateListComponent} />
+                    <Route path="/spectate/:id" component={SpectatableGames} />
+                    <Route path="/highscore" component={HiScoreForm} />
+                    <Route path="/rankings" component={Rankings} />
+                    <Route path="/my-rankings" component={PlayerRankingsComponent} />
+                </main>
+            </div>
+        </Router>
+    );
 }
