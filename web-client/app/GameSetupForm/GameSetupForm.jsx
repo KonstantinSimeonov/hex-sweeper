@@ -44,13 +44,18 @@ export default class GameSetupForm extends Component {
     }
 
     onSubmit() {
+        if(this.state.load) {
+            this.props.history.push('/play?load=true');
+            return;
+        }
+
         if (!this.state.formValid) {
             toastr.warning('Enter valid values for the new game!');
             return;
         }
 
         const { fieldSize, minesCount, spectatable, load } = this.state,
-            url = `/play?fieldSize=${fieldSize}&minesCount=${minesCount}&spectatable=${spectatable}&load=${load}`;
+            url = `/play?fieldSize=${fieldSize}&minesCount=${minesCount}&spectatable=${spectatable}`;
             
         this.props.history.push(url);
     }

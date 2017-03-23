@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import $ from 'jquery';
+import toastr from 'toastr';
 
 import styles from './app-menu.styl';
 
@@ -32,12 +32,15 @@ export default class AppMenu extends Component {
     }
 
     logout() {
+        toastr.success('Sad to see you go :(');
+
         localStorage.removeItem('token');
         localStorage.removeItem('username');
 
-        this.setState({ buttons: buttons.concat(buttonsWhenAnonymous), username: '' });
-
-        this.props.history.push('/login');
+        setTimeout(() => {
+            this.setState({ buttons: buttons.concat(buttonsWhenAnonymous), username: '' });
+            this.props.history.push('/login')
+        }, 1000);
     }
 
     render() {

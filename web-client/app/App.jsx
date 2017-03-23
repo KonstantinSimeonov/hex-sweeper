@@ -20,6 +20,7 @@ import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.js
 import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
 import PlayerRankings from './Rankings/PlayerRankings.jsx';
 import Rankings from './Rankings/Rankings.jsx';
+import Loader from './Loader/Loader.jsx';
 
 import './styles/global.styl';
 
@@ -30,7 +31,7 @@ export default class App extends Component {
 
     render() {
         const RegForm = ({ history }) => <ModalWindow title="Join, play, top the rankings." history={history} children={<RegistrationForm history={history} />} />,
-            LogForm = ({ history }) => <ModalWindow title="Welcome back." history={history} children={<LoginForm history={history} />} />,
+            LogForm = ({ history }) => <ModalWindow title="Here to sweep mines again?" history={history} children={<LoginForm history={history} />} />,
             HiScoreForm = ({ history }) => <ModalWindow title="How would you like to be known in the rankings?" children={<HighscoreForm history={history} />} history={history}/>,
             GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
             GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
@@ -44,7 +45,7 @@ export default class App extends Component {
                 <div>
                     <Route path="*" component={AppMenu} />
                     <main className="mainContent">
-                        {/*<Route path="/" component={() => <div></div>} />*/}
+                        {/*<Route path="/" component={Loader} />*/}
                         <Route path="/register" component={RegForm} />
                         <Route path="/login" component={LogForm} />
                         <Route path="/newgame" component={GameSetup} />

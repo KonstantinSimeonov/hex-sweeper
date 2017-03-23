@@ -6,13 +6,14 @@ import toastr from 'toastr';
 import { post as httpPost } from '../utils/json-requester.js';
 
 import TextInput from '../TextInput/TextInput.jsx';
+import Loader from '../Loader/Loader.jsx';
 import styles from './registration-form.styl';
 
 export default class RegistrationForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { username: '', password: '' };
+        this.state = { username: '', password: '', loading: false };
     }
 
     onChange(event) {
@@ -26,18 +27,21 @@ export default class RegistrationForm extends Component {
     submit() {
         const { username, password } = this.state;
 
+        this.setState({ loading: true });
+
         httpPost('http://localhost:6969/api/users', { user: { username, password } })
             .then(success => {
-                toastr.success('Registration successful!');
+                toastr.success(`Registration successful! Redirecting to login screen...`);
 
                 setTimeout(() => {
+                    this.setState({ loading: false });
                     this.props.history.goBack();
                     this.props.history.push('/login');
                 }, 2000);
             })
             .catch(error => {
                 toastr.error('Registration failed! Please make sure your username and password are valid and try again.');
-                console.log(error);
+                setTimeout(() => this.setState({ loading: false }), 2000);
             });
     }
 
@@ -65,9 +69,17 @@ export default class RegistrationForm extends Component {
                         />
                     </div>
                 </fieldset>
-                <div>
-                    <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
-                    <a className="custom-btn" onClick={this.onClose.bind(this)}>Close</a>
+                <div className={styles.controls}>
+                    {
+                        this.state.loading ?
+                            <Loader /> :
+                            (
+                                <div>
+                                    <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
+                                    <a className="custom-btn" onClick={this.onClose.bind(this)}>Close</a>
+                                </div>
+                            )
+                    }
                 </div>
             </form>
         </div>)
