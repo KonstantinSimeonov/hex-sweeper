@@ -11,7 +11,7 @@ function* getFieldFiller(options, hexagonSize, minesCount) {
         emptyCellsLeft = countCellsInHexagon(hexagonSize);
     
     if(minesCount >= emptyCellsLeft) {
-        throw new Error(`Mines count(${minesCount}) cannot be more than or equal to the number of cells`);
+        throw new Error(`Mines count(${minesCount}) cannot be more than or equal to the number of cells ${emptyCellsLeft}`);
     }
 
     while(emptyCellsLeft >= 0) {

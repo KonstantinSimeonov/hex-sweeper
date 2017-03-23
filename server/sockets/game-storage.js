@@ -2,79 +2,95 @@
 
 /* in-memory storage */
 
+/** Clean all games older than 60 seconds that are inactive */
+const CLEAN_UP_AFTER_SECONDS = 60,
+    /** Try to clean games every 30 seconds */
+    CLEAN_UP_SECONDS_INTERVAL = 30;
+
+/** private stuff */
 const rawStorage = {
-    gamesMap: Object.create(null),
+    gamesByUserId: Object.create(null),
     spectatableGames: [],
-    gamesById: Object.create(null)
-};
+    gamesByOwnId: Object.create(null)
+}, defaultTimeProvider = { get now() { return new Date(); } },
+    currentTimeProvider = defaultTimeProvider;
 
 // TODO: do some garbage collection
 const inMemoryGameStorage = {
+    /** Date time provider for testability - new Date() is hard to test */
+    get defaultTimeProvider() { return defaultTimeProvider; },
+    use(timeProvider) { currentTimeProvider = timeProvider; },
 
-   /**
-    * Store game objects by user id and game id.
-    */
+    /**
+     * Store game objects by user id and game id.
+     */
     storeGame(userId, gameId, field, details) {
         details.minesLeft = details.minesCount;
         const gameToStore = {
             field,
             details,
             gameId,
-            createdOn: new Date(),
-            lastUpdatedOn: new Date(),
+            createdOn: currentTimeProvider.now,
+            lastUpdatedOn: currentTimeProvider.now,
             updates: [],
         };
 
-        rawStorage.gamesById[gameId] = gameToStore;
-        rawStorage.gamesMap[userId] = gameToStore;
-        if(details.spectatable) {
+        rawStorage.gamesByOwnId[gameId] = gameToStore;
+        rawStorage.gamesByUserId[userId] = gameToStore;
+
+        if (details.spectatable) {
             rawStorage.spectatableGames.push(gameToStore);
+            // store index in game for faster GC when inactive
             gameToStore.spectatableIndex = rawStorage.spectatableGames.length - 1;
         }
     },
     getGameByUserId(userId) {
-        return rawStorage.gamesMap[userId];
+        return rawStorage.gamesByUserId[userId];
     },
     getGameByGameId(gameId) {
-        return rawStorage.gamesById[gameId];
+        return rawStorage.gamesByOwnId[gameId];
     },
     /**
      * Push serialized field updates to the storage. Uses user id to find the appropriate game.
      */
     update(userId, updates) {
-        const gameToUpdate = rawStorage.gamesMap[userId];
+        const gameToUpdate = rawStorage.gamesByUserId[userId];
 
         gameToUpdate.details.freeCells -= updates.length;
         gameToUpdate.updates.push(...updates);
-        gameToUpdate.lastUpdatedOn = new Date();
+        gameToUpdate.lastUpdatedOn = currentTimeProvider.now;
     },
     /**
      * Supposed to do garbage collection. Someone should write tests before letting that spin on setInterval thou.
      */
     cleanAllBefore(date) {
-        const lastUpdateAllowedMargin = new Date(Date.now() - 20 * 1000);
+        const lastUpdatedAllowedMargin = new Date(currentTimeProvider.now.getTime() - CLEAN_UP_AFTER_SECONDS * 1000);
 
-        for (const userId in rawStorage.gamesMap) {
-            const game = rawStorage.gamesMap[userId];
-            
-            if (!game.details.active && game.lastUpdatedOn < lastUpdateAllowedMargin) {
-                if(game.details.spectatable) {
-                    const lastSpectatable = rawStorage.spectatableGames.slice(-1)[0];
+        for (const userId in rawStorage.gamesByUserId) {
+            const game = rawStorage.gamesByUserId[userId];
+
+            /** if game inactive and last update was too long ago */
+            if (!game.details.active && game.lastUpdatedOn < lastUpdatedAllowedMargin) {
+                console.log(`GC game ${game.gameId}`);
+                if (game.details.spectatable) {
+                    /** gc from spectatable collection by index kept in game record */
+                    const lastSpectatable = rawStorage.spectatableGames[rawStorage.spectatableGames.length - 1];
 
                     lastSpectatable.spectatableIndex = game.spectatableIndex;
                     rawStorage.spectatableGames[game.spectatableIndex] = lastSpectatable;
                     rawStorage.spectatableGames.pop();
                 }
 
-                delete rawStorage.gamesMap[userId];
+                delete rawStorage.gamesByOwnId[game.gameId];
+                delete rawStorage.gamesByUserId[userId];
             }
         }
     },
-    getSpectatableGames() {
+    get spectatableGames() {
         return rawStorage.spectatableGames;
     }
 };
 
-setInterval(() => inMemoryGameStorage.cleanAllBefore(new Date()), 20 * 1000);
+setInterval(() => inMemoryGameStorage.cleanAllBefore(currentTimeProvider.now), CLEAN_UP_SECONDS_INTERVAL * 1000);
 
 module.exports = inMemoryGameStorage;

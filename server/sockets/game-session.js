@@ -58,12 +58,11 @@ class GameSession {
             spectatable
         } = request,
             field = createField(fieldSize, minesCount);
-
         inMemoryGameStorage.storeGame(this.userSession.id, this.gameId, field,
             {
-                spectatable,
                 minesCount,
                 fieldSize,
+                spectatable: spectatable === 'true',
                 freeCells: countCellsInHexagon(fieldSize) - minesCount,
                 active: true
             });
