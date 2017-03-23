@@ -19,7 +19,17 @@ export default class TextInput extends Component {
         event.preventDefault();
 
         const valueToValidate = event.target.value,
-            { pattern, patternErrorMessage } = this.props;
+            { pattern, patternErrorMessage, customValidate } = this.props;
+
+        if(Object.prototype.toString.call(customValidate) === '[object Function]') {
+            const error = customValidate(valueToValidate);
+
+            if(error) {
+                this.setState({ currentError: error, isValid: false });
+                this.props.onValidationFail();
+                return;
+            }
+        }
 
         if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
             if (!pattern.test(valueToValidate)) {
@@ -27,6 +37,10 @@ export default class TextInput extends Component {
                 return;
             }
 
+        }
+
+        if(this.props.onValidationSuccess) {
+            this.props.onValidationSuccess();
         }
 
         this.setState({ currentError: { message: '' }, isValid: true });

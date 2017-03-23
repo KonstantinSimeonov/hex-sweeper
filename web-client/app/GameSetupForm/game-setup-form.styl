@@ -1,5 +1,8 @@
 @import "../styles/global.styl"
 
+:local .inputGroup
+    display: inline-block
+
 :local .gameSetupForm
     position: relative
     background-color: rgba(0, 0, 0, 0.75)
@@ -12,24 +15,18 @@
     display: flex
 
     .inputGroup
-        width: 50%
+        width: 75%
+    
+    fieldset, .play, .load, .controls
+        display: inline-block
 
-        &.play, &.load
-            position: relative
-            height: 100%
-            top: 0
-            right: 0
-            width: 15%
-            padding: 5em 10em 0 0
-            
+    .chkbox
+        margin-left: 1em
+        margin-top: 0.5em
 
-        &.play
-            left: 10%
-            top: -2%
-
-        &.load
-            left: -8%
-            top: 10%
+    .controls
+        float: right
+        padding: 5em
 
     .playBtn
         cursor: pointer
