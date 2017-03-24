@@ -8,7 +8,7 @@ import styles from './app-menu.styl';
 
 const buttons = [
     { text: 'Play', href: '/newgame' },
-    { text: 'Spectate', href: '/spectate' },
+    { text: 'Spectate', href: '/spectatable' },
     { text: 'Ranking', href: '/rankings' }
 ],
     buttonsWhenAnonymous = [{ text: 'Log in', href: 'login' }, { text: 'Register', href: 'register' }];

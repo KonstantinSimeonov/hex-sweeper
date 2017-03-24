@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-start": "./node_modules/.bin/webpack-dev-server --port 8081"
+    "dev-start": "./node_modules/.bin/webpack-dev-server --port 8081",
+    "web-build": "webpack && npm run electron-build",
+    "package": "asar pack ",
+    "build": "rsync ./app/index.js ./package.json ./dist/ && electron-packager ./dist Hexsweeper --asar --overwrite --debug"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +21,9 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "css-loader": "^0.26.2",
+    "electron-build": "0.0.3",
+    "electron-packager": "^8.6.0",
+    "electron-prebuilt": "^1.4.13",
     "html-webpack-plugin": "^2.28.0",
     "jsx-webpack-loader": "^0.1.2",
     "style-loader": "^0.13.2",
@@ -29,7 +34,6 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

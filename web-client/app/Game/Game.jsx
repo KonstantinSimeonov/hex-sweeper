@@ -48,7 +48,6 @@ export default class Game extends Component {
      */
     onUpdates(updates) {
         console.log('CALLLLLED');
-        console.log(this.state.startDate, this.state.gameStarted);
         const updatedRows = [];
 
         for (const serializedUpdate of updates) {

@@ -11,7 +11,7 @@ const stylusPlugin = require('stylus-loader'),
     });
 
 module.exports = {
-    entry: ['./app/index.jsx'],
+    entry: ['./app/main.jsx'],
     module: {
         loaders: [
             { test: /\.styl$/, include: `${__dirname}/app/`, loader: 'style-loader!css-loader!stylus-loader' },
@@ -24,7 +24,7 @@ module.exports = {
         ]
     },
     output: {
-        filename: 'index.js',
+        filename: 'main.js',
         path: `${__dirname}/dist`
     },
     plugins: [htmlWebpackPluginConfig]
