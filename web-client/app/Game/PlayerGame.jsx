@@ -53,8 +53,6 @@ export default class PlayerGame extends Game {
                 toastr.success('Victory');
                 setTimeout(() => this.props.history.push('/rankings'), 5000);
             });
-
-        console.log(this.state.gameStarted);
     }
 
     onPlayerMove(row, col) {
@@ -64,11 +62,6 @@ export default class PlayerGame extends Game {
 
         this.socket.emit('move', { row, col });
     }
-
-    onCellMarker(row, col) {
-        this.socket.emit('mark', { row, col });
-    }
-
     onSaveClick() {
         this.socket.emit('save');
     }

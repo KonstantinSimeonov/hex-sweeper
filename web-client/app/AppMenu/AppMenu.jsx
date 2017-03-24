@@ -11,7 +11,7 @@ const buttons = [
     { text: 'Spectate', href: '/spectatable' },
     { text: 'Ranking', href: '/rankings' }
 ],
-    buttonsWhenAnonymous = [{ text: 'Log in', href: 'login' }, { text: 'Register', href: 'register' }];
+    buttonsWhenAnonymous = [{ text: 'Log in', href: '/login' }, { text: 'Register', href: '/register' }];
 
 export default class AppMenu extends Component {
     constructor(props) {
@@ -19,13 +19,13 @@ export default class AppMenu extends Component {
         this.state = { username: localStorage.getItem('username') || '' };
 
         if (this.state.username) {
-            this.state.buttons = buttons.concat([{ text: this.state.username, href: 'my-rankings' }]);
+            this.state.buttons = buttons.concat([{ text: this.state.username, href: '/my-rankings' }]);
         } else {
             this.state.buttons = buttons.concat(buttonsWhenAnonymous);
         }
 
         window.addEventListener('login', ({ detail: username }) => {
-            const newButtons = buttons.concat([{ text: username, href: 'my-rankings' }]);
+            const newButtons = buttons.concat([{ text: username, href: '/my-rankings' }]);
 
             this.setState({ buttons: newButtons, username: localStorage.getItem('username') });
         });

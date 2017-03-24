@@ -17,3 +17,14 @@
 
     &.cut, &.empty
         visibility: hidden
+
+    &.flagged span
+        position: relative
+
+        &::before
+            position: absolute
+            content: '\2691'
+            z-index: 9999
+            top: -1em
+            left: -0.5em
+            color: #6009A0

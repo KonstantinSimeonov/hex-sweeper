@@ -74,10 +74,10 @@ export default class Game extends Component {
                 {this.state.loading ? <Loader /> : ''}
                 <div className={styles.gameContainer + (this.state.loading ? '' : ` ${styles.active}`)}>
                     <div>
-                        {this.state.gameStarted ? <Timer startDate={this.state.startDate} frozen={!this.state.gameStarted}/> : ''}
+                        {this.state.gameStarted ? <Timer startDate={this.state.startDate} frozen={!this.state.gameStarted} /> : ''}
                         {localStorage.getItem('username') ? <a className={`custom-btn ${styles.saveBtn} ${this.state.saveBtnClass}`} onClick={this.onSaveClick ? this.onSaveClick.bind(this) : ''}>Save</a> : ''}
                     </div>
-                    <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : () => { }} />
+                    <MineField field={this.state.field} onCellClick={this.onPlayerMove ? this.onPlayerMove.bind(this) : () => {}} />
                 </div>
             </div>
         );

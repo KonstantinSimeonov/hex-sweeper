@@ -17,24 +17,25 @@ export default class SpectatedGame extends Game {
         this.connect({ type: 'spectate', id });
         this.socket
             .on('spectate:success', (spectateInfo) => {
+                this.onSpectateSuccess(spectateInfo);
                 setTimeout(() => {
-                    this.onSpectateSuccess(spectateInfo);
                     this.setState({ loading: false });
                 }, 2000);
             })
             .on('gameover', () => {
                 toastr.error('Boom. Lost!');
-                setTimeout(() => this.props.history.goBack(), 5000);
+                this.props.history.goBack();
             })
             .on('win', () => {
                 toastr.success('Victory');
-                setTimeout(() => this.props.history.goBack(), 5000);
+                setTimeout(() => this.props.history.goBack(), 3000);
             });
 
         this.socket.emit('spectate', { id });
     }
 
     onSpectateSuccess({ size }) {
+        console.log('ksa ksa');
         const fieldGenOptions = { getCell() { return 0; }, getNullCell() { return null; } },
             field = generateFile(fieldGenOptions, size);
 

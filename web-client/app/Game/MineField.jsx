@@ -24,8 +24,10 @@ export default function MineField(props) {
                         {
                             fieldRow.map((cellValue, col) => <Cell
                                 key={row + '.' + col}
+                                coords={row + '.' + col}
                                 onClick={() => props.onCellClick(row, col)} 
                                 value={cellValue}
+                                rightClick={props.rightClick} 
                                 cellType={cellType(cellValue)}/>)
                         }
                     </tr>))}

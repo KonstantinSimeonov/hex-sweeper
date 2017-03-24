@@ -14,10 +14,10 @@ export default class GameSetupForm extends Component {
 
         this.state = {
             difficulties: [
-                { name: 'low', minesPercentage: 0.3 },
-                { name: 'medium', minesPercentage: 0.4 },
-                { name: 'high', minesPercentage: 0.5 },
-                { name: 'very high', minesPercentage: 0.65 },
+                { name: 'low', minesPercentage: 0.15 },
+                { name: 'medium', minesPercentage: 0.2 },
+                { name: 'high', minesPercentage: 0.25 },
+                { name: 'very high', minesPercentage: 0.35 },
                 { name: 'custom' },
             ],
             selected: '',
@@ -49,7 +49,8 @@ export default class GameSetupForm extends Component {
             return;
         }
 
-        if (!this.state.formValid) {
+        if (!this.state.formValid || !this.state.minesCount) {
+            console.log(this.state.minesCount);
             toastr.warning('Enter valid values for the new game!');
             return;
         }
