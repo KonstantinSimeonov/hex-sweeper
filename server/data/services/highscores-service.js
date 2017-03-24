@@ -22,7 +22,7 @@ const serviceFunctions = ({ highscores }) => {
             // TODO: ranking calculation logic should defo be changed
             const cellsCount = countCellsInHexagon(highscoreToCreate.fieldSize),
                 minesCount = highscoreToCreate.minesCount,
-                ranking = cellsCount * Math.pow(minesCount / (cellsCount - minesCount), 10) / highscoreToCreate.time;
+                ranking = Math.pow(cellsCount, 3) * Math.pow(minesCount / (cellsCount - minesCount), 10) / highscoreToCreate.time;
 
             highscoreToCreate.ranking = ranking;
 

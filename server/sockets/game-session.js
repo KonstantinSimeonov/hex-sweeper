@@ -99,11 +99,14 @@ class GameSession {
     }
 
     onWin(wonGame) {
-        console.log('win');
         this.socket.emit('win').disconnect();
         this.spectators.forEach(spec => spec.socket.emit('win').disconnect());
         this.gamesService.save(wonGame, this.userSession.id);
         this.highscoresService.create(wonGame, this.userSession.username);
+        
+        if(wonGame.persistentStorageId) {
+            this.gamesService.markAsFinished(wonGame.persistentStorageId).then(console.log);
+        }
     }
 
     // TODO: propagate errors to client in a meaningful way
@@ -134,11 +137,13 @@ class GameSession {
         } else {
             this.gamesService.recoverLast(userId)
                 .then(([game]) => {
-                    inMemoryGameStorage.storeGame(userId, game.tmpId, game.field, game.details);
-                    inMemoryGameStorage.linkGameToPersintentStorageById(game.tmpId, game._id);
                     const { updates, details } = game;
+
                     this.socket.emit('load:success', { size: (game.field.length + 1) / 2 });
                     this.socket.emit('updates', updates);
+
+                    inMemoryGameStorage.storeGame(userId, game.tmpId, game.field, game.details);
+                    inMemoryGameStorage.linkGameToPersintentStorageById(game.tmpId, game._id);
                     inMemoryGameStorage.update(userId, updates);
                 })
                 .catch(err => console.log(err) || this.socket.emit('load:failure'));

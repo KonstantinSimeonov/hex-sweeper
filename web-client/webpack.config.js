@@ -1,6 +1,7 @@
 'use strict';
 
-const stylusPlugin = require('stylus-loader'),
+const webpack = require('webpack'),
+    stylusPlugin = require('stylus-loader'),
     cssLoader = require('css-loader'),
     styleLoader = require('style-loader'),
     HTMLWebpackPlugin = require('html-webpack-plugin'),
@@ -8,9 +9,11 @@ const stylusPlugin = require('stylus-loader'),
         template: `${__dirname}/app/index.html`,
         filename: 'index.html',
         inject: 'body'
-    });
+    }),
+    webpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 
 module.exports = {
+    devtool: 'cheap-module-source-map',
     entry: ['./app/main.jsx'],
     module: {
         loaders: [
@@ -27,5 +30,15 @@ module.exports = {
         filename: 'main.js',
         path: `${__dirname}/dist`
     },
-    plugins: [htmlWebpackPluginConfig]
+    plugins: [
+        htmlWebpackPluginConfig,
+        new webpack.DefinePlugin({
+                'process.env': { 'NODE_ENV': JSON.stringify('production') }
+            }),
+            new webpackUglifyJsPlugin({ 
+                compress: { warnings: false },
+                 minimize: true,
+            cacheFolder: `${__dirname}/styles-cache`,    
+             })
+        ]
 }
