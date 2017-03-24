@@ -15,7 +15,8 @@ export default class Rankings extends Component {
     }
 
     componentWillMount() {
-        httpGet('http://localhost:6969/api/highscores')
+         const { serverDomain } = window.appConfig;
+        httpGet(`${serverDomain}/api/highscores`)
             .then(rankings => this.setState({ rankings }))
             .catch(console.log);
     }

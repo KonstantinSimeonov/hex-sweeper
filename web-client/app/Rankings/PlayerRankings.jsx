@@ -16,7 +16,8 @@ export default class PlayerRankings extends Component {
     }
 
     componentWillMount() {
-        httpGet(`http://localhost:6969/api/highscores/${localStorage.getItem('username')}`)
+        const { serverDomain } = window.appConfig;
+        httpGet(`${serverDomain}/api/highscores/${localStorage.getItem('username')}`)
             .then(rankings => this.setState({ rankings }))
             .catch(err => console.log(err));
     }
