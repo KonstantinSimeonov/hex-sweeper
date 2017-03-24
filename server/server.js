@@ -1,24 +1,17 @@
 'use strict';
 
 const express = require('express'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    cors = require('cors');
 
 const server = express(),
-    socketServer = require('http').createServer(server),
     serverConfig = require('./server-config');
 
-// TODO: extract with other middlewares
-function cors(req, res, next) {
-    res.header('Access-Control-Allow-Origin', serverConfig.corsConfig.allowedOrigins);
-    res.header('Access-Control-Allow-Methods', serverConfig.corsConfig.allowedMethods);
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+server.use(cors({ origin: serverConfig.corsConfig.allowedOrigins }));
 
-    next();
-}
+const socketServer = require('http').createServer(server);
 
 server
-    .use(cors)
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }));
 
