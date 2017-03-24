@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-start": "./node_modules/.bin/webpack-dev-server --port 8081",
-    "web-build": "webpack && npm run build",
-    "build": "rsync ./app/index.js ./package.json ./dist/ && electron-packager ./dist Hexsweeper --asar --overwrite --debug"
+    "web-build": "webpack",
+    "desktop-build": "rsync ./app/index.js ./package.json ./dist/ && electron-packager ./dist Hexsweeper --asar --overwrite --debug"
   },
   "author": "",
   "license": "ISC",

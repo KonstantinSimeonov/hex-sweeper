@@ -1,6 +1,7 @@
 # Hexagonal minesweeper
 
 Web based minesweeper where the field and the cells have the shape of a hexagon.
+You can play it [here](https://hexsweeper.herokuapp.com). Initial loading can take several seconds because heroku sleeps apps in free mode.
 
 ## Features
 
@@ -18,12 +19,28 @@ npm install
 npm start
 ```
 
-- Run the client
+- Run the client(will start a webpack dev server on port 8081)
 ```
 cd web-client
 npm install
-webpack-dev-server --port 8081
+npm run dev-start
 ```
+
+- Building the clients
+    - web
+
+    ```
+        cd web-client
+        npm install
+        npm run web-build
+    ```
+
+    - electron desktop
+    ```
+        cd web-client
+        npm install
+        npm run desktop-build
+    ```
 
 ## Technologies used
 
@@ -38,10 +55,24 @@ webpack-dev-server --port 8081
     - crypto.js
     - jsonwebtoken
     - node-uuid
+    - cors
+    - harp
 
 - Development
     - Stylus
-    - Webpack
+    - Webpack and loaders
     - Babel
     - Mocha
     - Chai
+    - uglifyjs
+
+## TODOS
+- unit test socket sessions with mocking
+- unit test in-memory game storage
+    - garbage collection is working buggy
+- integration test socket session with mock client
+- engineer rating logic
+    - could be done by calculus
+    - think of other possibilities
+- setup shared code between client and server
+- make ui responsive
