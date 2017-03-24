@@ -12,7 +12,7 @@ export default class SpectatedGame extends Game {
 
         this.state.loading = true;
 
-        const { match: { params: { id } } } = props
+        const { match: { params: { id } } } = props;
 
         this.connect({ type: 'spectate', id });
         this.socket
@@ -35,7 +35,6 @@ export default class SpectatedGame extends Game {
     }
 
     onSpectateSuccess({ size }) {
-        console.log('ksa ksa');
         const fieldGenOptions = { getCell() { return 0; }, getNullCell() { return null; } },
             field = generateFile(fieldGenOptions, size);
 

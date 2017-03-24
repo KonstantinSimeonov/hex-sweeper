@@ -10,6 +10,7 @@ import TextInput from '../TextInput/TextInput.jsx';
 
 import styles from './login-form.styl';
 
+
 export default class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -23,10 +24,11 @@ export default class LoginForm extends Component {
 
     submit() {
         const { username, password } = this.state;
+const { serverDomain } = window.appConfig;
 
         this.setState({ loading: true });
 
-        post('http://localhost:6969/api/authenticate', { user: { username, password } })
+        post(`${serverDomain}/api/authenticate`, { user: { username, password } })
             .then(response => {
                 toastr.success(`Welcome, ${username}!`);
 

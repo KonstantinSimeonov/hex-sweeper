@@ -1,5 +1,7 @@
 'use strict';
 
+const ENVIRONMENT = process.env.ENV;
+
 const webpack = require('webpack'),
     stylusPlugin = require('stylus-loader'),
     cssLoader = require('css-loader'),
@@ -12,9 +14,11 @@ const webpack = require('webpack'),
     }),
     webpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 
+const mainFilePath = (ENVIRONMENT === 'production') ? './app/main.production.jsx' : './app/main.development.jsx';
+
 module.exports = {
     devtool: 'cheap-module-source-map',
-    entry: ['./app/main.jsx'],
+    entry: [mainFilePath],
     module: {
         loaders: [
             { test: /\.styl$/, include: `${__dirname}/app/`, loader: 'style-loader!css-loader!stylus-loader' },
@@ -31,18 +35,19 @@ module.exports = {
         path: `${__dirname}/dist`
     },
     plugins: [
-         new webpackUglifyJsPlugin({
-      cacheFolder: `${__dirname}/webpack_cached/`,
-      debug: true,
-      minimize: true,
-      sourceMap: false,
-      output: {
-        comments: false
-      },
-      compressor: {
-        warnings: false
-      },
+        new webpackUglifyJsPlugin({
+            cacheFolder: `${__dirname}/webpack_cached/`,
+            debug: true,
+            minimize: true,
+            sourceMap: false,
+            output: {
+                comments: false
+            },
+            compressor: {
+                warnings: false
+            }
+        }),
+        new webpack.EnvironmentPlugin(['NODE_ENV']),
         htmlWebpackPluginConfig
-})
-        ]
+    ]
 }

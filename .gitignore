@@ -15,5 +15,8 @@ typings.json
 # build output
 dist
 
-# electron app
-.asar
+# electron builds
+Hexsweeper-*
+
+# uglify js webpack cache
+webpack_cached

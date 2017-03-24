@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import toastr from 'toastr';
 
 import { get as httpGet } from '../utils/json-requester.js';
 
@@ -9,15 +10,17 @@ import Loader from '../Loader/Loader.jsx';
 
 import styles from './spectatable-games-list.styl';
 
+
 export default class SpectatableGamesList extends Component {
     constructor(props) {
         super(props);
 
+const { serverDomain } = window.appConfig;
         this.state = {};
 
-        httpGet('http://localhost:6969/api/spectatable')
+        httpGet(`${serverDomain}/api/spectatable`)
             .then(spectatable => setTimeout(() => this.setState({ spectatable }), 1000))
-            .catch(console.log);
+            .catch(() => toastr.warning('Failed to fetch games from the remote server! Check your internet connection and try again.'));
     }
 
     render() {

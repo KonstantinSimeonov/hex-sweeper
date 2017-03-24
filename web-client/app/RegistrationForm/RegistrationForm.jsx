@@ -7,7 +7,9 @@ import { post as httpPost } from '../utils/json-requester.js';
 
 import TextInput from '../TextInput/TextInput.jsx';
 import Loader from '../Loader/Loader.jsx';
+
 import styles from './registration-form.styl';
+
 
 export default class RegistrationForm extends Component {
     constructor(props) {
@@ -26,10 +28,11 @@ export default class RegistrationForm extends Component {
 
     submit() {
         const { username, password } = this.state;
+const { serverDomain } = window.appConfig;
 
         this.setState({ loading: true });
 
-        httpPost('http://localhost:6969/api/users', { user: { username, password } })
+        httpPost(`${serverDomain}/api/users`, { user: { username, password } })
             .then(success => {
                 toastr.success(`Registration successful! Redirecting to login screen...`);
 

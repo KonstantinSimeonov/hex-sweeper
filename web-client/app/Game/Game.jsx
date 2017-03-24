@@ -16,6 +16,7 @@ const rowMask = (1 << 17) - 1,
     colMask = (1 << 10) - 1,
     valueMask = (1 << 4) - 1;
 
+
 export default class Game extends Component {
     // TODO: shared code? 
     static deserializeCellUpdate(cellUpdate) {
@@ -30,9 +31,10 @@ export default class Game extends Component {
 
     connect(options = {}) {
         const token = localStorage.getItem('token');
+const { serverDomain } = window.appConfig;
         options.token = token;
 
-        this.socket = io('http://localhost:6969', { transports: ['websocket'], query: options });
+        this.socket = io(serverDomain, { transports: ['websocket'], query: options });
         this.socket
             .on('idAssigned', token => localStorage.setItem('token', token))
             .on('updates', this.onUpdates.bind(this));
