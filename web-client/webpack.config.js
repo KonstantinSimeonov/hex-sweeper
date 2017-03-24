@@ -18,7 +18,7 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.styl$/, include: `${__dirname}/app/`, loader: 'style-loader!css-loader!stylus-loader' },
-            { test: /\.jsx$/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } },
+            { test: /\.jsx?$/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] }, exclude: /(node_modules|bower_components)/, },
             {
                 //IMAGE LOADER
                 test: /\.(jpe?g|png|gif|svg)$/,
@@ -31,14 +31,18 @@ module.exports = {
         path: `${__dirname}/dist`
     },
     plugins: [
-        htmlWebpackPluginConfig,
-        new webpack.DefinePlugin({
-                'process.env': { 'NODE_ENV': JSON.stringify('production') }
-            }),
-            new webpackUglifyJsPlugin({ 
-                compress: { warnings: false },
-                 minimize: true,
-            cacheFolder: `${__dirname}/styles-cache`,    
-             })
+         new webpackUglifyJsPlugin({
+      cacheFolder: `${__dirname}/webpack_cached/`,
+      debug: true,
+      minimize: true,
+      sourceMap: false,
+      output: {
+        comments: false
+      },
+      compressor: {
+        warnings: false
+      },
+        htmlWebpackPluginConfig
+})
         ]
 }

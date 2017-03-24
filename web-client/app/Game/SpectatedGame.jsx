@@ -4,7 +4,7 @@ import toastr from 'toastr';
 
 import Game from './Game.jsx';
 
-import generateFile from '../../../shared/generate-field.js';
+import generateFile from '../logic/generate-field.js';
 
 export default class SpectatedGame extends Game {
     constructor(props) {

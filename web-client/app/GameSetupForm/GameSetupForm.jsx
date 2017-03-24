@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import toastr from 'toastr';
 
 import TextInput from '../TextInput/TextInput.jsx';
-import countCellsInHexagon from '../../../shared/count-cells.js';
+import countCellsInHexagon from '../logic/count-cells.js';
 
 import styles from './game-setup-form.styl';
 

@@ -3,13 +3,12 @@
 import React, { Component } from 'react';
 import toastr from 'toastr';
 
-import generateField from '../../../shared/generate-field.js';
+import generateField from '../logic/generate-field.js';
 
 import Game from './Game.jsx';
 import MineField from './MineField.jsx';
 
 import styles from './game.styl';
-
 
 export default class PlayerGame extends Game {
     constructor(props) {
