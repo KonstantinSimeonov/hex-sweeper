@@ -71,8 +71,12 @@ npm run dev-start
 - unit test in-memory game storage
     - garbage collection is working buggy
 - integration test socket session with mock client
+- setup ci
+- setup sane packaging for deployment
 - engineer rating logic
     - could be done by calculus
     - think of other possibilities
 - setup shared code between client and server
 - make ui responsive
+- improve time measurement logic
+- split server code in two smaller apps - restful api and gaming server

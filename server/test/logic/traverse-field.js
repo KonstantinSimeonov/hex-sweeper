@@ -5,7 +5,7 @@ const { expect } = require('chai');
 
 const X = null, O = 0, M = -1;
 
-const { revealCellAt, isInsideSquare, countAdjMines, neighbors } = require('../../logic/traverse-field')({
+const { revealCellAt, isInsideSquare, countAdjMines, neighbors } = require('../../src/logic/traverse-field')({
     get mineCellToken() { return M },
     get emptyCellToken() { return -2 }
 });

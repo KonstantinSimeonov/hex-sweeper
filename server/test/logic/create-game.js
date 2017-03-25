@@ -2,7 +2,7 @@
 
 const { expect } = require('chai');
 
-const { createField } = require('../../logic');
+const { createField } = require('../../src/logic');
 
 describe('Logic modules should generate correct game fields when used together', () => {
     describe('Field size should be correct', () => {

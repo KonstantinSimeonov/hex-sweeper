@@ -5,24 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec ./test/*",
-    "start": "node server.js",
-    "dev-start": "nodemon server.js"
+    "start": "node ./src/server.js",
+    "dev-start": "nodemon ./src/server.js",
+    "package-dist": "cd ./src && npm install && gulp clean && gulp dist",
+    "postinstall": "cd ./src && npm install"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.17.1",
-    "cors": "^2.8.1",
-    "crypto-js": "^3.1.9-1",
-    "express": "^4.15.2",
-    "express.io": "^1.1.13",
-    "jsonwebtoken": "^7.3.0",
-    "mongodb": "^2.2.24",
-    "node-uuid": "^1.4.7",
-    "socket.io": "^1.7.3"
-  },
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-cli": "^1.2.2",
+    "gulp-copy": "^1.0.0",
+    "gulp-rename": "^1.2.2",
     "mocha": "^3.2.0"
   }
 }

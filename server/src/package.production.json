@@ -1,0 +1,14 @@
+{
+  "name": "hxspr-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server-config.js",
+  "engines": {
+    "node": "7.7.4"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "KonstantinSimeonov<kon.simeonov@protonmail.com>",
+  "license": "ISC"
+}

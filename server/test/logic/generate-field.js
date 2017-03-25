@@ -5,7 +5,7 @@ const { expect } = require('chai');
 const O = '0',
     X = 'x';
 
-const getGenerateField = require('../../logic/generate-field'),
+const getGenerateField = require('../../src/logic/generate-field'),
     generateField = getGenerateField(({
         getCell() { return O; },
         getNullCell() { return X; }

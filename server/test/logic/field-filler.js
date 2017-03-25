@@ -2,7 +2,7 @@
 
 const { expect } = require('chai');
 
-const { countCellsInHexagon, getFieldFiller } = require('../../logic/field-filler');
+const { countCellsInHexagon, getFieldFiller } = require('../../src/logic/field-filler');
 
 const mineGeneratorOptions = {
     getMine() { return 1; },

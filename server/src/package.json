@@ -1,0 +1,24 @@
+{
+    "name": "hxspr-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server-config.js",
+    "engines": {
+        "node": "7.7.4"
+    },
+    "scripts": {
+        "start": "node server.js"
+    },
+    "author": "KonstantinSimeonov<kon.simeonov@protonmail.com>",
+    "dependencies": {
+        "body-parser": "^1.17.1",
+        "cors": "^2.8.1",
+        "crypto-js": "^3.1.9-1",
+        "express": "^4.15.2",
+        "jsonwebtoken": "^7.3.0",
+        "mongodb": "^2.2.24",
+        "node-uuid": "^1.4.7",
+        "socket.io": "^1.7.3"
+    },
+    "license": "ISC"
+}
