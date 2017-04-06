@@ -12,8 +12,9 @@ const rawStorage = {
     gamesByUserId: Object.create(null),
     spectatableGames: [],
     gamesByOwnId: Object.create(null)
-}, defaultTimeProvider = { get now() { return new Date(); } },
-    currentTimeProvider = defaultTimeProvider;
+}, defaultTimeProvider = { get now() { return new Date(); } };
+
+let currentTimeProvider = defaultTimeProvider;
 
 // TODO: do some garbage collection
 const inMemoryGameStorage = {
@@ -57,7 +58,7 @@ const inMemoryGameStorage = {
     deactivateGameById(gameId) {
         const gameToDeactivate = this.getGameByGameId(this.gameId);
 
-        if(gameToDeactivate) {
+        if (gameToDeactivate) {
             game.details.active = false;
         }
     },
