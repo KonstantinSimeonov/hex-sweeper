@@ -24,7 +24,7 @@ export default class LoginForm extends Component {
 
     submit() {
         const { username, password } = this.state;
-const { serverDomain } = window.appConfig;
+        const { serverDomain } = window.appConfig;
 
         this.setState({ loading: true });
 

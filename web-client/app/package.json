@@ -1,0 +1,17 @@
+{
+    "name": "web-client",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "engines": {
+        "node": "7.7.4"
+    },
+    "scripts": {
+        "start": "harp server --port $PORT"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "harp": "^0.23.0"
+    }
+}
