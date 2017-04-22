@@ -6,8 +6,8 @@ import toastr from 'toastr';
 
 import { post } from '../utils/json-requester.js';
 
-import { loginUser } from '../actions/index';
-import Loader from '../Loader/Loader.jsx';
+import { loginUser, setLoginUsername } from '../actions/index';
+import Loader from '../components/Loader/Loader.jsx';
 import TextInput from '../TextInput/TextInput.jsx';
 
 import styles from './login-form.styl';
@@ -28,7 +28,7 @@ class LoginForm extends Component {
         const { username, password } = this.state;
 
         this.props.dispatch(loginUser(this.state.username, this.state.password));
-        console.log(this.props);
+        this.props.dispatch(setLoginUsername(this.state.username));
         // this.setState({ loading: true });
         // post(`${serverDomain}/api/authenticate`, { user: { username, password } })
         //     .then(response => {

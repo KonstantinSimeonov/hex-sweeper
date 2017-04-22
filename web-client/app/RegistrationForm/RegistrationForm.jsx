@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import { post as httpPost } from '../utils/json-requester.js';
 
 import TextInput from '../TextInput/TextInput.jsx';
-import Loader from '../Loader/Loader.jsx';
+import Loader from '../components/Loader/Loader.jsx';
 
 import styles from './registration-form.styl';
 

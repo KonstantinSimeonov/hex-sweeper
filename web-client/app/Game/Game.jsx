@@ -7,8 +7,8 @@ import io from '../../node_modules/socket.io-client/dist/socket.io.min.js'
 import { get as httpGet, post as httpPost } from '../utils/json-requester.js';
 
 import MineField from './MineField.jsx';
-import Timer from '../Timer/Timer.jsx';
-import Loader from '../Loader/Loader.jsx';
+import Timer from '../components/Timer/Timer.jsx';
+import Loader from '../components/Loader/Loader.jsx';
 
 import styles from './game.styl';
 

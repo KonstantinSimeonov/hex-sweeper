@@ -7,7 +7,7 @@ import createBrowserHistory from 'history/createBrowserHistory.js'
 import $ from 'jquery';
 import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
-import ModalWindow from './ModalWindow/ModalWindow.jsx';
+import ModalWindow from './components/ModalWindow/ModalWindow.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import LoginForm from './LoginForm/LoginForm.jsx';
 import AppMenu from './containers/AppMenu.jsx';
@@ -15,13 +15,11 @@ import Game from './Game/Game.jsx';
 import PlayerGame from './Game/PlayerGame.jsx';
 import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
 import SpectatableGame from './Game/SpectatedGame.jsx';
-import Timer from './Timer/Timer.jsx';
-import SpectatableGamesList from './SpectatableGamesList/SpectatableGamesList.jsx';
+import Timer from './components/Timer/Timer.jsx';
+import SpectatableGamesList from './containers/SpectatableGamesList.jsx';
 import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
-import PlayerRankings from './Rankings/PlayerRankings.jsx';
-import Rankings from './Rankings/Rankings.jsx';
-import Loader from './Loader/Loader.jsx';
-import GlobalRankings from './containers/GlobalRankings.jsx';
+import Loader from './components/Loader/Loader.jsx';
+import Rankings from './containers/Rankings.jsx';
 
 import './styles/global.styl';
 
@@ -53,7 +51,7 @@ export default function App(props) {
         GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
         SpectatableGames = ({ match, history }) => <SpectatableGame match={match} history={history} />,
         RankingsComponent = () => <Rankings />,
-        PlayerRankingsComponent = () => <PlayerRankings />;
+        PlayerRankingsComponent = () => <Rankings forCurrentUser={true} />;
 
     return (
         <Router history={createBrowserHistory()}>
@@ -67,7 +65,7 @@ export default function App(props) {
                     <Route path="/spectatable" component={SpectateListComponent} />
                     <Route path="/spectate/:id" component={SpectatableGames} />
                     <Route path="/highscore" component={HiScoreForm} />
-                    <Route path="/rankings" component={GlobalRankings} />
+                    <Route path="/rankings" component={RankingsComponent} />
                     <Route path="/my-rankings" component={PlayerRankingsComponent} />
                 </main>
             </div>

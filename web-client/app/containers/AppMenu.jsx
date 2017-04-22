@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { logoutUser } from '../actions';
-import Menu from '../components/Menu.jsx';
+import Menu from '../components/Menu/Menu.jsx';
 
-function AppMenu({ username, dispatch }) {
+const AppMenu = ({ username, dispatch }) => {
     const menuItems = [
-            { text: 'Play', href: '/newgame' },
-            { text: 'Spectate', href: '/spectatable' },
-            { text: 'Ranking', href: '/rankings' }
+        { text: 'Play', href: '/newgame' },
+        { text: 'Spectate', href: '/spectatable' },
+        { text: 'Ranking', href: '/rankings' }
     ];
 
     if(username) {

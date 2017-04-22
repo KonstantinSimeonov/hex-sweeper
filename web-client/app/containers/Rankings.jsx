@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import RankingsTable from '../Rankings/Rankings.jsx';
+import RankingsTable from '../components/Rankings/RankingsTable.jsx';
 import { fetchRankings } from '../actions/index';
 
 class Rankings extends Component {
@@ -10,8 +10,8 @@ class Rankings extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, token } = this.props;
-        dispatch(fetchRankings(token));
+        const { dispatch, username, forCurrentUser } = this.props;
+        dispatch(fetchRankings(forCurrentUser ? username : undefined));
     }
 
     render() {
@@ -20,6 +20,6 @@ class Rankings extends Component {
     }
 }
 
-const mapStateToProps = state => ({ token: state.token });
+const mapStateToProps = state => ({ username: state.users.username, rankings: state.rankings.rankings });
 
 export default connect(mapStateToProps)(Rankings);
