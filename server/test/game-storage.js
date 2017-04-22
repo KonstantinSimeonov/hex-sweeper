@@ -3,8 +3,12 @@
 const { expect } = require('chai'),
     uuid = require('uuid');
 
-const storage = require('../src/sockets/game-storage'),
-    json = JSON.stringify.bind(JSON);
+const createMemoryStorageInstance = require('../src/sockets/class-game-storage').createInstance;
+
+const json = JSON.stringify.bind(JSON);
+let storage;
+
+beforeEach(() => storage = createMemoryStorageInstance());
 
 describe('in-memory game storage tests', () => {
     describe('Adding and accessing games', () => {
@@ -13,7 +17,7 @@ describe('in-memory game storage tests', () => {
                 userId = uuid.v1(),
                 field = [[0, 1], [1, 1], [0, 1]],
                 details = { minesCount: 2 };
-            console.log(userId);
+
             storage.storeGame(userId, gameId, field, details);
 
             const gameFromStorage = storage.getGameByUserId(userId);

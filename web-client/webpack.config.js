@@ -17,6 +17,9 @@ const webpack = require('webpack'),
 const mainFilePath = (ENVIRONMENT === 'production') ? './app/main.production.jsx' : './app/main.development.jsx';
 
 module.exports = {
+    devServer: {
+        historyApiFallback: true,
+    },
     devtool: 'cheap-module-source-map',
     entry: [mainFilePath],
     module: {
@@ -35,19 +38,19 @@ module.exports = {
         path: `${__dirname}/dist`
     },
     plugins: [
-        new webpackUglifyJsPlugin({
-            cacheFolder: `${__dirname}/webpack_cached/`,
-            debug: true,
-            minimize: true,
-            sourceMap: false,
-            output: {
-                comments: false
-            },
-            compressor: {
-                warnings: false
-            }
-        }),
-        new webpack.EnvironmentPlugin(['NODE_ENV']),
+        // new webpackUglifyJsPlugin({
+        //     cacheFolder: `${__dirname}/webpack_cached/`,
+        //     debug: true,
+        //     minimize: true,
+        //     sourceMap: false,
+        //     output: {
+        //         comments: false
+        //     },
+        //     compressor: {
+        //         warnings: false
+        //     }
+        // }),
+        // new webpack.EnvironmentPlugin(['NODE_ENV']),
         htmlWebpackPluginConfig
     ]
 }

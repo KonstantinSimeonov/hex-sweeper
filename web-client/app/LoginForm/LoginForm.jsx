@@ -1,21 +1,23 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 import { post } from '../utils/json-requester.js';
 
+import { loginUser } from '../actions/index';
 import Loader from '../Loader/Loader.jsx';
 import TextInput from '../TextInput/TextInput.jsx';
 
 import styles from './login-form.styl';
 
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { username: '', password: '', loading: false };
+        this.state = { username: '', password: '' };
     }
 
     onChange(event) {
@@ -24,31 +26,33 @@ export default class LoginForm extends Component {
 
     submit() {
         const { username, password } = this.state;
-        const { serverDomain } = window.appConfig;
 
-        this.setState({ loading: true });
+        this.props.dispatch(loginUser(this.state.username, this.state.password));
+        console.log(this.props);
+        // this.setState({ loading: true });
+        // post(`${serverDomain}/api/authenticate`, { user: { username, password } })
+        //     .then(response => {
+        //         toastr.success(`Welcome, ${username}!`);
 
-        post(`${serverDomain}/api/authenticate`, { user: { username, password } })
-            .then(response => {
-                toastr.success(`Welcome, ${username}!`);
+        //         localStorage.setItem('token', response.token);
+        //         localStorage.setItem('username', username);
 
-                localStorage.setItem('token', response.token);
-                localStorage.setItem('username', username);
+        //         const loggedInEvent = new CustomEvent('login', { detail: username });
+        //         window.dispatchEvent(loggedInEvent);
 
-                const loggedInEvent = new CustomEvent('login', { detail: username });
-                window.dispatchEvent(loggedInEvent);
+        //         setTimeout(() => this.props.history.goBack(), 2000);
+        //     })
+        //     .catch(error => {
+        //         toastr.error('Login not successful! Make sure your credentials are correct and try again.');
 
-                setTimeout(() => this.props.history.goBack(), 2000);
-            })
-            .catch(error => {
-                toastr.error('Login not successful! Make sure your credentials are correct and try again.');
-
-                setTimeout(() => this.setState({ loading: false }), 2000);
-                console.log(error);
-            });
+        //         setTimeout(() => this.setState({ loading: false }), 2000);
+        //         console.log(error);
+        //     });
     }
 
     render() {
+        const { loading } = this.props;
+
         return (<div className={styles.loginForm} onClick={event => event.preventDefault()}>
             <form>
                 <fieldset>
@@ -71,16 +75,21 @@ export default class LoginForm extends Component {
                     </div>
                 </fieldset>
                 <div className={styles.controls}>
-                    {
-                        this.state.loading ?
-                            <Loader /> :
-                            (<div>
-                                <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
-                                <a className="custom-btn" onClick={() => this.props.history.goBack()}>Close</a>
-                            </div>)
+                    {loading && <Loader />}
+                    {!loading && (<div>
+                        <a className="custom-btn" onClick={this.submit.bind(this)}>Submit</a>
+                        <a className="custom-btn" onClick={() => this.props.history.goBack()}>Close</a>
+                    </div>)
                     }
                 </div>
             </form>
         </div>)
     }
 }
+
+const mapStateToProps = state => ({
+    loading: state.users.loginLoading,
+    token: state.token
+});
+
+export default connect(mapStateToProps)(LoginForm);

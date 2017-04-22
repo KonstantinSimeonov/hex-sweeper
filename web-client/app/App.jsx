@@ -10,7 +10,7 @@ import io from '../node_modules/socket.io-client/dist/socket.io.js';
 import ModalWindow from './ModalWindow/ModalWindow.jsx';
 import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
 import LoginForm from './LoginForm/LoginForm.jsx';
-import AppMenu from './AppMenu/AppMenu.jsx';
+import AppMenu from './containers/AppMenu.jsx';
 import Game from './Game/Game.jsx';
 import PlayerGame from './Game/PlayerGame.jsx';
 import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
@@ -21,6 +21,7 @@ import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
 import PlayerRankings from './Rankings/PlayerRankings.jsx';
 import Rankings from './Rankings/Rankings.jsx';
 import Loader from './Loader/Loader.jsx';
+import GlobalRankings from './containers/GlobalRankings.jsx';
 
 import './styles/global.styl';
 
@@ -66,7 +67,7 @@ export default function App(props) {
                     <Route path="/spectatable" component={SpectateListComponent} />
                     <Route path="/spectate/:id" component={SpectatableGames} />
                     <Route path="/highscore" component={HiScoreForm} />
-                    <Route path="/rankings" component={Rankings} />
+                    <Route path="/rankings" component={GlobalRankings} />
                     <Route path="/my-rankings" component={PlayerRankingsComponent} />
                 </main>
             </div>
