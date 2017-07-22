@@ -1,18 +1,15 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import toastr from 'toastr';
+import { observer } from 'mobx-react';
 
-import { post } from '../utils/json-requester.js';
-
-import { loginUser, setLoginUsername } from '../actions/index';
-import Loader from '../components/Loader/Loader.jsx';
-import TextInput from '../TextInput/TextInput.jsx';
+import Loader from '../components/Loader/Loader';
+import TextInput from '../TextInput/TextInput';
 
 import styles from './login-form.styl';
 
-
+@observer
 class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -27,8 +24,10 @@ class LoginForm extends Component {
     submit() {
         const { username, password } = this.state;
 
-        this.props.dispatch(loginUser(this.state.username, this.state.password));
-        this.props.dispatch(setLoginUsername(this.state.username));
+        // this.props.dispatch(loginUser(this.state.username, this.state.password));
+        // this.props.dispatch(setLoginUsername(this.state.username));
+        // const { username, password } = this.state;
+        this.props.store.login(username, password);
         // this.setState({ loading: true });
         // post(`${serverDomain}/api/authenticate`, { user: { username, password } })
         //     .then(response => {
@@ -52,6 +51,7 @@ class LoginForm extends Component {
 
     render() {
         const { loading } = this.props;
+        console.log(this.props);
 
         return (<div className={styles.loginForm} onClick={event => event.preventDefault()}>
             <form>
@@ -87,9 +87,4 @@ class LoginForm extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    loading: state.users.loginLoading,
-    token: state.token
-});
-
-export default connect(mapStateToProps)(LoginForm);
+export default LoginForm;

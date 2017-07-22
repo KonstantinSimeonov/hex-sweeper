@@ -104,7 +104,4 @@ class InMemoryGameStorage {
     }
 }
 
-module.exports = {
-    instance: InMemoryGameStorage.createInstance(),
-    createInstance: InMemoryGameStorage.createInstance
-};
+module.exports = InMemoryGameStorage.createInstance();

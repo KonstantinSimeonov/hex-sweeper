@@ -58,6 +58,7 @@ class GameSession {
             spectatable
         } = request,
             field = createField(fieldSize, minesCount);
+        console.log(inMemoryGameStorage, 'zdrkp');
         inMemoryGameStorage.storeGame(this.userSession.id, this.gameId, field,
             {
                 minesCount,

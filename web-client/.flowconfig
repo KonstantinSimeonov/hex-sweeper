@@ -1,0 +1,6 @@
+[ignore]
+
+[include]
+*./app/.*
+./gulpfile.js
+./webpack.config.js

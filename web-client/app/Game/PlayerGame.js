@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import toastr from 'toastr';
 
-import generateField from '../logic/generate-field.js';
+import generateField from '../logic/generate-field';
 
-import Game from './Game.jsx';
-import MineField from './MineField.jsx';
+import Game from './Game';
+import MineField from './MineField';
 
 import styles from './game.styl';
 

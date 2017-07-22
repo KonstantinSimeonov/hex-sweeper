@@ -7,21 +7,24 @@ import createBrowserHistory from 'history/createBrowserHistory.js'
 import $ from 'jquery';
 import io from '../node_modules/socket.io-client/dist/socket.io.js';
 
-import ModalWindow from './components/ModalWindow/ModalWindow.jsx';
-import RegistrationForm from './RegistrationForm/RegistrationForm.jsx';
-import LoginForm from './LoginForm/LoginForm.jsx';
-import AppMenu from './containers/AppMenu.jsx';
-import Game from './Game/Game.jsx';
-import PlayerGame from './Game/PlayerGame.jsx';
-import GameSetupForm from './GameSetupForm/GameSetupForm.jsx';
-import SpectatableGame from './Game/SpectatedGame.jsx';
-import Timer from './components/Timer/Timer.jsx';
-import SpectatableGamesList from './containers/SpectatableGamesList.jsx';
-import HighscoreForm from './HighscoreForm/HighscoreForm.jsx';
-import Loader from './components/Loader/Loader.jsx';
-import Rankings from './containers/Rankings.jsx';
+import ModalWindow from './components/ModalWindow/ModalWindow';
+import RegistrationForm from './RegistrationForm/RegistrationForm';
+import LoginForm from './LoginForm/LoginForm';
+import AppMenu from './containers/AppMenu';
+import Game from './Game/Game';
+import GameSetupForm from './GameSetupForm/GameSetupForm';
+import SpectatableGame from './Game/SpectatedGame';
+import Timer from './components/Timer/Timer';
+import SpectatableGamesList from './containers/SpectatableGamesList';
+import HighscoreForm from './HighscoreForm/HighscoreForm';
+import Loader from './components/Loader/Loader';
+import Rankings from './containers/Rankings';
 
 import './styles/global.styl';
+
+import AppStore from './stores/app-store';
+
+import GameStore from './stores/game-store';
 
 export default function App(props) {
     const RegForm = ({ history }) => (
@@ -33,7 +36,7 @@ export default function App(props) {
         LogForm = ({ history }) => (
             <ModalWindow
                 title="Here to sweep mines again?" history={history}>
-                <LoginForm history={history} />
+                <LoginForm store={AppStore} />
             </ModalWindow>
         ),
         HiScoreForm = ({ history }) => (
@@ -48,7 +51,7 @@ export default function App(props) {
             </ModalWindow>
         ),
         GameSetup = ({ history, location }) => <GameSetupForm history={history} location={location} />,
-        GameComponent = ({ location, history }) => <PlayerGame location={location} history={history} />,
+        GameComponent = ({ location, history }) => <Game location={location} history={history} store={new GameStore()} />,
         SpectatableGames = ({ match, history }) => <SpectatableGame match={match} history={history} />,
         RankingsComponent = () => <Rankings />,
         PlayerRankingsComponent = () => <Rankings forCurrentUser={true} />;

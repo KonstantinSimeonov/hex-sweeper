@@ -1,0 +1,46 @@
+<p>Напоследък разцъквам един tool-че за JavaScript, което ми прави живота доста по-лесен. Тъй като се оказа, че се setup-ва бързо и лесно (инсталация на един npm пакет и да научите две команди от терминала), и се използва лесно, реших да ви го засиля, понеже ще ви е полезно за Node.js проектите, да не говорим пък ако после отидете да пишете някъде JavaScript.</p>
+<br/>
+<br/>
+<p>Едно от неприятните неща при разработката на софтуер с JavaScript e, че често имате проблеми от рода на да се налага да си подкарате кода, само за да видите, че сте подали някъде стринг, вместо число или пък да гледате някоя функция, която сте напраскали преди 5-6 дни и да се чудите "как се ползваше тая проклетия?". Колкото по-голям е проекта, толкова повече се задълбочават проблеми от този тип, особено ако липсва документация. JavaScript обаче се развива доста стремглаво през последните няколко години и постоянно излизат интересни решения на различните проблеми, свързани с езика. Едно решение на по-горните проблеми е tool-а на Facebook, <strong>flowtype</strong>.</p>
+<br />
+<br />
+<p><h3 style="display:inline-block;">Flow</h3>
+е static type checker за JavaScript, което значи, че Flow минава през кода ви и проверява дали начинът, по който използвате типовете в кода ви, е коректен. Например ако се опитате да разделите <strong>string</strong> на <strong>number</strong>, или да направите нещо от рода на <strong>'1234'.push('3')</strong>, Flow веднага ще ви се скара. Това обаче са прости примери и не са идеално практични.</p>
+<div data-class="code-mirror-read-only" data-language="text/javascript" style="color:green;width:50%;max-height:50px;overflow-y:scroll;border:1px solid #aaa;padding:10px;">
+// @flow
+
+function sum(...numbers : Array<number>): number {
+    return numbers.reduce((sum, current) => sum + current, 0);
+}
+
+sum(1, 2, 3, 'gosho'); // flow error, 'gosho' is not a number
+sum(1, 2).log('zdrkp'); // flow error, Number does not have property log
+</div>
+<br />
+<br />
+<h3>Ползи от Flow:</h3>
+<ul>
+<li>получавате <strong>някаква</strong> гаранция, че програмата ви е коректна, още преди да я изпълните.</li>
+<li>ще <strong>можете да</strong> <strong>добавяте и променяте код по-спокойно и уверено</strong>, тъй като Flow ще ви пищи, ако счупите нещо и модулите ви вече не са съвместими</li>
+<li><strong>колегите ви ще разбират по-добре кода, който сте написали</strong>, както и по-какъв начин се очаква да го използват (както и вие техния) - това идва от там, че Flow ви дава начин да слагате анотации за тип на променливи, функции и стойности</li>
+<li><strong>не жертвате гъвкавостта на JavaScript</strong>, като използвате Flow (по-строго типизиране не означава, че кодът, който пишете, трябва да е по-дървен, <span style="font-size:xx-small;">това е стереотип заради Java и C# :D)</span></li>
+<li>ако си настроите текстовия редактор/IDE-то, <strong>ще имате по-добър autocomplete, както и подчертавки за грешки и т.н.</strong></li>
+<li><strong>можете да ползвате Flow за проверка само на определени файлове (като сложите коментар <strong>// @flow</strong> най-отгоре във файла)</strong>, не на целия ви проект. <strong>Можете да започнете да хващате ползвите вендага, без да ви се налага да слагате type annotations за всичко, което сте накодили досега.</strong></li>
+<li><strong>По принцип Flow има специален синтаксис, който е почти като JavaScript, но не е валиден JavaScript. За щастие обаче има и стинтаксис, който се възползва от коментари и по този начин можете хем да се възползвате от Flow, хем кода ви да е валиден JavaScript и да не ви се налга да закачате Babel и разни такива (страшни засега) неща.</strong>
+<div data-class="code-mirror-read-only" data-language="text/javascript" style="color:green;width:50%;max-height:50px;overflow-y:scroll;border:1px solid #aaa;padding:10px;">
+// @flow
+
+function sum(...numbers /*: Array<number> */) /*: number */ {
+    return numbers.reduce((sum, current) => sum + current, 0);
+}
+
+sum(1, 2, 3, 'gosho'); // flow error, 'gosho' is not a number
+sum(1, 2).log('zdrkp'); // flow error, Number does not have property log
+</div>
+</li>
+
+</ul>
+<br/>
+<br/>
+<h3>Getting started:</h3>
+<p>Отивате на <a href="https://flow.org">flow.org</a> и започвате да четете tutorial-ите там - <strong>кратички са и би трябвало да са ви достатъчни, за да се ориентирате.</strong> Няма нужда да прехвърляте по-дебелите теми, но задължително погледнете сетъп, синтаксис с коментари, както и освновните правила на type annotations във Flow. В документацията има изброени и extension-и за различните редактори - има за Atom, VS Code, Vim, Sublime, WebStorm и знам ли още какво.</p>

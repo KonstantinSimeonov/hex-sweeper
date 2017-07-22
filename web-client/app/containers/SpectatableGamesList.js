@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 import { fetchSpectatableGames } from '../actions';
-import { get as httpGet } from '../utils/json-requester.js';
+import { get as httpGet } from '../utils/json-requester';
 
-import Loader from '../components/Loader/Loader.jsx';
-import GamesList from '../components/GamesList/GamesList.jsx';
+import Loader from '../components/Loader/Loader';
+import GamesList from '../components/GamesList/GamesList';
 
 class SpectatableGamesList extends Component {
     constructor(props) {

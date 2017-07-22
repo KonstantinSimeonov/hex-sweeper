@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import toastr from 'toastr';
 
-import TextInput from '../TextInput/TextInput.jsx';
-import countCellsInHexagon from '../logic/count-cells.js';
+import TextInput from '../TextInput/TextInput';
+import countCellsInHexagon from '../logic/count-cells';
 
 import styles from './game-setup-form.styl';
 

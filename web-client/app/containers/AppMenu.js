@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { logoutUser } from '../actions';
-import Menu from '../components/Menu/Menu.jsx';
+import Menu from '../components/Menu/Menu';
 
 const AppMenu = ({ username, dispatch }) => {
     const menuItems = [

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import RankingsTable from '../components/Rankings/RankingsTable.jsx';
+import RankingsTable from '../components/Rankings/RankingsTable';
 import { fetchRankings } from '../actions/index';
 
 class Rankings extends Component {

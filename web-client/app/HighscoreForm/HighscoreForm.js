@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 
-import { put as httpPut } from '../utils/json-requester.js';
-import TextInput from '../TextInput/TextInput.jsx';
+import { put as httpPut } from '../utils/json-requester';
+import TextInput from '../TextInput/TextInput';
 
 import toastr from 'toastr';
 
